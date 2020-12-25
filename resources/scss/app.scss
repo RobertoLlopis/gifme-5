@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'partials/fonts';
+@import 'partials/colors';
+@import 'partials/mixins';
+
+.home {
+    background-color: blue;
+}
+.card{
+    @include flex-column;
+    width:60%;
+    padding: 2rem 2.5rem;
+    background-color: #fff;
+    border: 1px solid $card-border-color;
+}
+
