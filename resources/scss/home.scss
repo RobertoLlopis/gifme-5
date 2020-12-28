@@ -50,12 +50,10 @@
     &-add-comment{
         min-height:3rem;
         width: 100%;
-        textarea{
+        input{
             &::placeholder{
                 color: $yellow-official;
             }
-            padding-top: 1rem;
-            line-height: 0.8rem;
             width: 100%;
             height: 100%;
             background-color: transparent;
