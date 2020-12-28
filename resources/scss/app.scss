@@ -6,14 +6,27 @@
 @import 'partials/colors';
 @import 'partials/mixins';
 
-.home {
-    background-color: blue;
+@import 'home';
+@import 'sidebar';
+
+.main-cnt{
+    @include flex-row;
 }
 .card{
     @include flex-column;
-    width:60%;
-    padding: 2rem 2.5rem;
-    background-color: #fff;
-    border: 1px solid $card-border-color;
+    width:600px;
+    background-color: $card-header-color;
+    border: 1px solid $yellow-official;
+    border-radius: 4px;
 }
-
+.user-picture{
+    @include bg-img('https://i.imgur.com/BsLZgXz.gif');
+    @include border($yellow-official, 50%);
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    clip-path: circle(50% at 50% 50%);
+}
+.gif{
+    height: 100%;
+}

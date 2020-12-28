@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', '') | {{ config('app.name', 'Laravel') }}</title>
 
     <link rel="shortcut icon" href="imgs/favicon.svg" type="image/x-icon">
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
     @livewireStyles
 
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/d81a69ccc9.js" crossorigin="anonymous"></script>
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
@@ -26,10 +27,10 @@
         @livewire('navigation-dropdown')
 
         <!-- Page Content -->
-        <main>
-            <x-home />
+        <main class="w-screen main-cnt">
+            @yield('home', '')
+            @yield('sidebar', '')
             <x-sidebar />
-            <h1>Here we are</h1>
         </main>
     </div>
 

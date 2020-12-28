@@ -12,6 +12,11 @@
     justify-content: flex-start;
     align-items: center;
 }
+@mixin flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 @mixin bg-img ($url){
     background: transparent url($url) no-repeat center;
     background-size: contain;
