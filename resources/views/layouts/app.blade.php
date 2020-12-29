@@ -28,9 +28,12 @@
 
         <!-- Page Content -->
         <main class="w-screen main-cnt">
+        @if(isset($slot))
+            {{$slot}}
+        @else
             @yield('home', '')
             @yield('sidebar', '')
-            <x-sidebar />
+        @endif
         </main>
     </div>
 
