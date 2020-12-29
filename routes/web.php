@@ -15,4 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/', [HomeController::class, 'index']);
+
+Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+
