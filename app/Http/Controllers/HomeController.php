@@ -23,7 +23,8 @@ class HomeController extends Controller
             array_push($outputPosts,$postInfo);
         }
 
-        return($outputPosts[1]);
+        return $outputPosts[1];
+        // return view('delete',['post'=> $outputPosts[1]]);
 
     }
 }
