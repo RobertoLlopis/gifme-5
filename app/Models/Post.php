@@ -27,7 +27,7 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)
         ->join('users','users.id','=','comments.user_id')
-        ->select('users.name','comments.description');
+        ->select('users.name as username','comments.description','comments.id');
     }
 
     public function user()

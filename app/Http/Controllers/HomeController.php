@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function index()
     {
         //Recabar la info de los posts as $posts
-        return view('home');
+        return view('home', ['posts' => $this->getPostsInfo()]);
     }
 
     public function getPostsInfo(){
@@ -29,8 +29,8 @@ class HomeController extends Controller
             array_push($outputPosts,$postInfo);
         }
 
-        return $outputPosts[1];
-        // return view('delete',['post'=> $outputPosts[1]]);
+        return $outputPosts;
+        //return view('delete',['post'=> $outputPosts[1]]);
 
     }
 }
