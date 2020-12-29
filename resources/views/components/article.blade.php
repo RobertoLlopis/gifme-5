@@ -15,8 +15,12 @@
                 <div class="article-description"><span class="description-user-name">{{$post['user']['name']}}</span> ipsum dolor sit, amet consectetur adipisicing elit. Earum repudiandae voluptatum corporis iure at cum, voluptate distinctio, quaerat non porro a eos doloremque deserunt eaque! Rerum quidem ratione eum quasi.</div>
                 <div class="article-comments-cnt">
                     <p class="mt-2 text-gray-500 underline cursor-pointer">See the <span class="number-of-comments">34</span> comments </p>
-                    <x-comment :comment="['id'=>'203', 'user'=>['name'=> 'Arturo'], 'comment' => 'lkfdhkghkfhglfdhgldfhgfglfhdghldf']" />
+                    <!-- @foreach($post['comments'] as $comment)
+                    <x-comment :comment="$comment" />
+                    @endforeach -->
                 </div>
             </div>
-            @livewire('add-comment')    
+            <form class="article-add-comment px-8">
+                <input type="text" name="add-comment" placeholder="Add a comment...">
+            </form>   
         </article>
