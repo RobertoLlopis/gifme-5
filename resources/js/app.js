@@ -1,18 +1,11 @@
-require('./bootstrap');
 
+require('./bootstrap');
 require('alpinejs');
 
-$('.home').on('submit', handleHomeSubmit);
+import { $ } from './utils.js';
+import { handleHomeSubmit } from './listeners';
 
-/* function handleHomeSubmit(e) {
-    if (e.target.classList.includes('article-add-comment')) {
-        fetch()
-    }
-} */
+$('.home').addEventListener('submit', handleHomeSubmit);
 
-function $(selector) {
-    return document.querySelector(selector);
-}
-function on(eventKind, callback) {
-    return addEventListener(eventKind, callback);
-}
+
+

@@ -1,4 +1,4 @@
-<article id="{{$post['id']}}" class="article">
+<article id="{{$post['id']}}" class="article shadow-xl">
             <div class="article-header">
                 <div class="user-picture" style="background-image: url({{$post['user']['profile_photo_url']}});"></div>
                 <div class="article-user-name">{{$post['user']['name']}}</div>

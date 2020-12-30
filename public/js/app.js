@@ -21279,12 +21279,20 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
+
+
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleHomeSubmit"]);
 
 /***/ }),
 
@@ -21317,6 +21325,74 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/listeners.js":
+/*!***********************************!*\
+  !*** ./resources/js/listeners.js ***!
+  \***********************************/
+/*! exports provided: handleHomeSubmit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+
+function handleHomeSubmit(e) {
+  e.preventDefault();
+
+  if (e.target.classList.contains('article-add-comment')) {
+    var postId = e.target.closest('article').id;
+    var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target, [['postId', postId]]);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/add-comment', formData).then(function (text) {
+      return console.log(text);
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/js/utils.js":
+/*!*******************************!*\
+  !*** ./resources/js/utils.js ***!
+  \*******************************/
+/*! exports provided: $, fetchPost, createFormData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "$", function() { return $; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchPost", function() { return fetchPost; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFormData", function() { return createFormData; });
+var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+var username = document.head.querySelector("[name~=username]").content;
+function $(selector) {
+  return document.querySelector(selector);
+}
+function fetchPost(url, formData) {
+  return fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      "X-CSRF-Token": csrfToken
+    }
+  }).then(function (response) {
+    return response.text();
+  })["catch"](function (error) {
+    return console.error(error);
+  });
+}
+;
+function createFormData(form) {
+  var toAppend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var formData = new FormData(form);
+  toAppend && toAppend.forEach(function (e) {
+    return formData.append(e[0], e[1]);
+  });
+  return formData;
+}
 
 /***/ }),
 

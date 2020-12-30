@@ -31,6 +31,8 @@ class HomeController extends Controller
 
         return $outputPosts;
         //return view('delete',['post'=> $outputPosts[1]]);
-
+    }
+    public function addComment(Request $request){
+      return dd($request->all());
     }
 }
