@@ -21286,13 +21286,22 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+/* harmony import */ var _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dragAndDrop */ "./resources/js/dragAndDrop.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 
 
+
+var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
+['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave'].forEach(function (evt) {
+  return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener(evt, _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dragEventHandler"]);
+});
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dropHandler"]);
+modal.addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleHomeSubmit"]);
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#add-post').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalDisplay"]);
 
 /***/ }),
 
@@ -21328,16 +21337,66 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/dragAndDrop.js":
+/*!*************************************!*\
+  !*** ./resources/js/dragAndDrop.js ***!
+  \*************************************/
+/*! exports provided: dropHandler, dragEventHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dropHandler", function() { return dropHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dragEventHandler", function() { return dragEventHandler; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+ //$('body').addEventListener('dragenter dragover dragleave', dragEventHandler);
+//update drag item when drag starts
+
+/* //update when a dragged item enter, goes over and exits from a droppable item
+function dragEventHandler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    //if event is enter kind update drop item
+    if (e.type === 'dragenter') {
+
+        //
+    }
+} */
+//on drop listener
+
+function dropHandler(e) {
+  e.stopPropagation();
+  e.preventDefault(); //get the data when dropped
+
+  var dataTransfer = e.dataTransfer || e.originalEvent && e.originalEvent.dataTransfer; //In case it is a file coming from the Operative System
+
+  dataTransfer.effectAllowed = 'move';
+  var file = dataTransfer.files[0];
+  console.log(file); //use same function declared in crud.js
+
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/add-post', Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFileFormData"])([['file', file], ['description', Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post textarea').value]])).then(function (text) {
+    return console.log(text);
+  });
+}
+function dragEventHandler(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+/***/ }),
+
 /***/ "./resources/js/listeners.js":
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: handleHomeSubmit */
+/*! exports provided: handleHomeSubmit, handleModalClick, handleModalDisplay */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 
 function handleHomeSubmit(e) {
@@ -21351,6 +21410,21 @@ function handleHomeSubmit(e) {
     });
   }
 }
+function handleModalClick(e) {
+  if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
+    if (modal.querySelector('div').style.display != 'none') modal.querySelector('div').style.display = 'none';
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(modal);
+  }
+}
+function handleModalDisplay(e) {
+  var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
+  e.preventDefault();
+
+  if (e.target.closest('#add-post')) {
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fadeIn"])(modal);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post').style.display = 'flex';
+  }
+}
 
 /***/ }),
 
@@ -21358,14 +21432,17 @@ function handleHomeSubmit(e) {
 /*!*******************************!*\
   !*** ./resources/js/utils.js ***!
   \*******************************/
-/*! exports provided: $, fetchPost, createFormData */
+/*! exports provided: $, fetchPost, createFileFormData, createFormData, dissapear, fadeIn */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "$", function() { return $; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchPost", function() { return fetchPost; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFileFormData", function() { return createFileFormData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFormData", function() { return createFormData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dissapear", function() { return dissapear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fadeIn", function() { return fadeIn; });
 var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
 var username = document.head.querySelector("[name~=username]").content;
 function $(selector) {
@@ -21385,6 +21462,13 @@ function fetchPost(url, formData) {
   });
 }
 ;
+function createFileFormData(toAppend) {
+  var form_data = new FormData();
+  toAppend.forEach(function (elem) {
+    return form_data.append(elem[0], elem[1]);
+  });
+  return form_data;
+}
 function createFormData(form) {
   var toAppend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var formData = new FormData(form);
@@ -21392,6 +21476,18 @@ function createFormData(form) {
     return formData.append(e[0], e[1]);
   });
   return formData;
+}
+function dissapear(element) {
+  //Element should have transition: opacity property in css
+  element.style.opacity = '0';
+  setTimeout(function () {
+    return element.style.display = 'none';
+  }, 300);
+}
+function fadeIn(element) {
+  //Element should have transition: opacity property in css
+  element.style.display = 'flex';
+  element.style.opacity = '1';
 }
 
 /***/ }),

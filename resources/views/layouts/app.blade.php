@@ -22,7 +22,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
-<body class="font-sans antialiased">
+<body draggable class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-dropdown')
 
@@ -36,7 +36,7 @@
         @endif
         </main>
     </div>
-
+    <x-modal />
     @stack('modals')
 
     @livewireScripts

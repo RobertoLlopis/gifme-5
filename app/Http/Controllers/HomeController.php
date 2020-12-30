@@ -35,4 +35,7 @@ class HomeController extends Controller
     public function addComment(Request $request){
       return dd($request->all());
     }
+    public function addPost(Request $request){
+        return dd($request->all());
+      }
 }

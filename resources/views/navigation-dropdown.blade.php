@@ -2,7 +2,7 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20">
-            <div class="flex">
+            <div class="flex justify-between w-full">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -11,15 +11,19 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden w-full justify-between space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="/" :active="request()->routeIs('')">
                         Home
+                    </x-jet-nav-link>
+                    <x-jet-nav-link id="add-post" href="#">
+                        <i class="far fa-plus-square text-4xl"></i>
                     </x-jet-nav-link>
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+                
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
