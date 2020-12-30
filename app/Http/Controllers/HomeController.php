@@ -19,13 +19,11 @@ class HomeController extends Controller
     }
 
     public function getPostsInfo(){
-        $postsId = Post::all()->pluck('id');
+        $posts = Post::all();
         $outputPosts = [];
 
-        foreach ($postsId as $postId){
-            $post = new Post();
-            $postInfo = $post->getPostInfo($postId);
-            
+        foreach ($posts as $post){
+            $postInfo = $post->getPostInfo();
             array_push($outputPosts,$postInfo);
         }
 

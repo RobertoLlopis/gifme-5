@@ -14,8 +14,6 @@ class CommentController extends Controller
             'comment' => 'required'
         ]);
 
-
-
         $article = new Comment();
         $article->slug = Str::random(11);
         $article->description = $request->description;
