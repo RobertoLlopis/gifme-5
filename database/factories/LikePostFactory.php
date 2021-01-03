@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\FavouritePost;
+use App\Models\LikePost;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FavouritePostFactory extends Factory
+class LikePostFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = FavouritePost::class;
+    protected $model = LikePost::class;
 
     /**
      * Define the model's default state.
@@ -28,6 +28,7 @@ class FavouritePostFactory extends Factory
         return [
             'user_id' => $this->faker->randomElement($usersId),
             'post_id' => $this->faker->randomElement($postId),
+            //
         ];
     }
 }
