@@ -34,12 +34,12 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)
         ->join('users','users.id','=','comments.user_id')
-        ->select('users.name as username','comments.description','comments.id');
+        ->select('users.name as name','users.user_name as username','comments.description','comments.id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select('name','profile_photo_path');
+        return $this->belongsTo(User::class)->select('name','profile_photo_path','user_name');
     }
 
     public function likesPosts()

@@ -31,4 +31,6 @@ class HomeController extends Controller
         //return view('delete',['post'=> $outputPosts[1]]);
 
     }
+
+    // public function 
 }
