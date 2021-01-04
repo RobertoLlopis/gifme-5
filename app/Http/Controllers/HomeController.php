@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -19,13 +20,11 @@ class HomeController extends Controller
     }
 
     public function getPostsInfo(){
-        $postsId = Post::all()->pluck('id');
+        $posts = Post::all();
         $outputPosts = [];
 
-        foreach ($postsId as $postId){
-            $post = new Post();
-            $postInfo = $post->getPostInfo($postId);
-            
+        foreach ($posts as $post){
+            $postInfo = $post->getPostInfo();
             array_push($outputPosts,$postInfo);
         }
 
@@ -38,4 +37,9 @@ class HomeController extends Controller
     public function addPost(Request $request){
         return dd($request->all());
       }
+
+    public function getUsers(){
+        // return User::all()->select('id','user_name');
+        return User::all('id','user_name');
+    }
 }
