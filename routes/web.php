@@ -32,4 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->delete('/post/{id}', [ArticlesC
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+// Getting info for posts
 Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
+// Getting users foro listing when "@"
+Route::get('/getUsers', [HomeController::class, 'getUsers']);
