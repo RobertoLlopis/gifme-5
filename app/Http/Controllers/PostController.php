@@ -26,4 +26,9 @@ class PostController extends Controller
         $article->save();
         return back();
     }
+
+    public function deletePost($id) {
+        Post::destroy($id);
+        return back();
+    }
 }

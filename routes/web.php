@@ -21,10 +21,13 @@ Route::get('/welcome', function(){
     return view('welcome');
 });
 
+// Creating elements
 Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post"); 
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment"); 
 Route::middleware(['auth:sanctum', 'verified'])->post('/likePost', [LikePostController::class, 'createLikePost'])->name("create_like_post"); 
 Route::middleware(['auth:sanctum', 'verified'])->post('/dislikePost', [DislikePostController::class, 'createDislikePost'])->name("create_dislike_post"); 
+// Destroying elements
+Route::middleware(['auth:sanctum', 'verified'])->delete('/post/{id}', [ArticlesController::class, 'deletePost'])->name("delete_article");
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
