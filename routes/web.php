@@ -38,6 +38,6 @@ Route::get('/getUsers', [HomeController::class, 'getUsers']);
 
 
 
-//TO DELETE ROBERTO
+/* //TO DELETE ROBERTO
 Route::post('/add-comment', [HomeController::class, 'addComment']);
-Route::post('/add-post', [HomeController::class, 'addPost']);
+Route::post('/add-post', [HomeController::class, 'addPost']); */

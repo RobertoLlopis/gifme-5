@@ -1,6 +1,16 @@
-import { $, createFormData, fetchPost, dissapear, fadeIn, uploadFileToImgur, debounceEvent, testImage } from './utils.js';
-const newGifCnt = $('#last-load-img');
-const gifUrlInput = $('input[name="gif-url"]');
+import {
+    $,
+    createFormData,
+    fetchPost,
+    dissapear,
+    showModal,
+    uploadFileToImgur,
+    debounceEvent,
+    testImage
+} from './utils.js';
+
+export const newGifCnt = $('#last-load-img');
+const gifUrlInput = $('input[name="custom-gif-url"]');
 
 export function handleHomeSubmit(e) {
     e.preventDefault();
@@ -9,7 +19,7 @@ export function handleHomeSubmit(e) {
         let postId = e.target.closest('article').id;
         let formData = createFormData(e.target, [['postId', postId]]);
 
-        fetchPost('/add-comment', formData)
+        fetchPost('/comment', formData)
             .then(text => console.log(text));
     }
 }
@@ -27,16 +37,11 @@ export function handleModalClick(e) {
 }
 
 export function handleModalDisplay(e) {
-    const modal = $('#modal-background-layer');
     e.preventDefault();
-
     if (e.target.closest('#add-post')) {
-        fadeIn(modal);
-        $('#modal-new-post').style.display = 'flex';
-
+        showModal($('#modal-new-post'));
     }
 }
-
 export function handleNewPostFileChange(e) {
     if (!e.target.files[0]) {
         console.error('Not file finnaly selected or file input error');
@@ -47,7 +52,7 @@ export function handleNewPostFileChange(e) {
         changeNewPostUrl(res.data.link);
     });
 }
-function changeNewPostUrl(url) {
+export function changeNewPostUrl(url) {
     newGifCnt.src = url;
     gifUrlInput.value = url;
 }
@@ -67,10 +72,16 @@ export const handleCustomUrlChange = debounceEvent(function (e) {
 
 
 export function handleNewPostSubmit(e) {
+    e.preventDefault();
+    console.log(e.target.elements);
     if (!newGifCnt.src) {
         alert('You need to load at least a gif');
         return;
     }
-
-
+    let formData = createFormData(e.target);
+    console.log(formData);
+    fetchPost('/post', formData)
+        .then(text => console.log(text));
 }
+
+

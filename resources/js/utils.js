@@ -63,6 +63,11 @@ export function fadeIn(element) {
     element.style.opacity = '1';
 }
 
+export function showModal(submodal) {
+    const modal = $('#modal-background-layer');
+    fadeIn(modal);
+    submodal.style.display = 'flex';
+}
 export function debounceEvent(callback, time) {
     let interval;
     return (...args) => {

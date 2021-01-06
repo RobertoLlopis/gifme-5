@@ -21375,6 +21375,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dropHandler", function() { return dropHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dragEventHandler", function() { return dragEventHandler; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+
  //on drop listener
 
 function dropHandler(e) {
@@ -21385,8 +21387,10 @@ function dropHandler(e) {
 
   dataTransfer.effectAllowed = 'move';
   var file = dataTransfer.files[0];
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["uploadFileToImgur"])(file).then(function (data) {
-    return console.log(data);
+  _listeners__WEBPACK_IMPORTED_MODULE_1__["newGifCnt"].closest('div').style.display = 'block';
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["showModal"])(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post'));
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["uploadFileToImgur"])(file).then(function (res) {
+    return Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["changeNewPostUrl"])(res.data.link);
   });
 }
 function dragEventHandler(e) {
@@ -21400,28 +21404,30 @@ function dragEventHandler(e) {
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: handleHomeSubmit, handleModalClick, handleModalDisplay, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit */
+/*! exports provided: newGifCnt, handleHomeSubmit, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeNewPostUrl", function() { return changeNewPostUrl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleCustomUrlChange", function() { return handleCustomUrlChange; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
-var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="gif-url"]');
+var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
 function handleHomeSubmit(e) {
   e.preventDefault();
 
   if (e.target.classList.contains('article-add-comment')) {
     var postId = e.target.closest('article').id;
     var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target, [['postId', postId]]);
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/add-comment', formData).then(function (text) {
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/comment', formData).then(function (text) {
       return console.log(text);
     });
   }
@@ -21441,12 +21447,10 @@ function handleModalClick(e) {
   }
 }
 function handleModalDisplay(e) {
-  var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
   e.preventDefault();
 
   if (e.target.closest('#add-post')) {
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fadeIn"])(modal);
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post').style.display = 'flex';
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["showModal"])(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post'));
   }
 }
 function handleNewPostFileChange(e) {
@@ -21461,12 +21465,10 @@ function handleNewPostFileChange(e) {
     changeNewPostUrl(res.data.link);
   });
 }
-
 function changeNewPostUrl(url) {
   newGifCnt.src = url;
   gifUrlInput.value = url;
 }
-
 var handleCustomUrlChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["testImage"])(e.target.value, function (url, result) {
     if (!result) {
@@ -21481,10 +21483,19 @@ var handleCustomUrlChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debou
   });
 }, 1000);
 function handleNewPostSubmit(e) {
+  e.preventDefault();
+  console.log(e.target.elements);
+
   if (!newGifCnt.src) {
     alert('You need to load at least a gif');
     return;
   }
+
+  var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target);
+  console.log(formData);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/post', formData).then(function (text) {
+    return console.log(text);
+  });
 }
 
 /***/ }),
@@ -21493,7 +21504,7 @@ function handleNewPostSubmit(e) {
 /*!*******************************!*\
   !*** ./resources/js/utils.js ***!
   \*******************************/
-/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, debounceEvent, testImage */
+/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21505,6 +21516,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFormData", function() { return createFormData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dissapear", function() { return dissapear; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fadeIn", function() { return fadeIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return showModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounceEvent", function() { return debounceEvent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testImage", function() { return testImage; });
 var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
@@ -21570,6 +21582,11 @@ function fadeIn(element) {
   //Element should have transition: opacity property in css
   element.style.display = 'flex';
   element.style.opacity = '1';
+}
+function showModal(submodal) {
+  var modal = $('#modal-background-layer');
+  fadeIn(modal);
+  submodal.style.display = 'flex';
 }
 function debounceEvent(callback, time) {
   var interval;
