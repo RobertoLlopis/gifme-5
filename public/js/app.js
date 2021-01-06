@@ -21434,18 +21434,23 @@ function handleHomeSubmit(e) {
 }
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
-    var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
-
-    if (modal.querySelector('div').style.display != 'none') {
-      modal.querySelector('div').style.display = 'none';
-      newGifCnt.closest('div').style.display = 'none';
-      changeNewPostUrl('');
-    }
-
-    ;
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(modal);
+    hideModal();
   }
 }
+
+function hideModal() {
+  var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
+
+  if (modal.querySelector('div').style.display != 'none') {
+    modal.querySelector('div').style.display = 'none';
+    newGifCnt.closest('div').style.display = 'none';
+    changeNewPostUrl('');
+  }
+
+  ;
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(modal);
+}
+
 function handleModalDisplay(e) {
   e.preventDefault();
 
@@ -21496,6 +21501,7 @@ function handleNewPostSubmit(e) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/post', formData).then(function (text) {
     return console.log(text);
   });
+  hideModal();
 }
 
 /***/ }),

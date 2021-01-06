@@ -26,16 +26,18 @@ export function handleHomeSubmit(e) {
 
 export function handleModalClick(e) {
     if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
-        const modal = $('#modal-background-layer');
-        if (modal.querySelector('div').style.display != 'none') {
-            modal.querySelector('div').style.display = 'none';
-            newGifCnt.closest('div').style.display = 'none';
-            changeNewPostUrl('');
-        };
-        dissapear(modal);
+        hideModal();
     }
 }
-
+function hideModal() {
+    const modal = $('#modal-background-layer');
+    if (modal.querySelector('div').style.display != 'none') {
+        modal.querySelector('div').style.display = 'none';
+        newGifCnt.closest('div').style.display = 'none';
+        changeNewPostUrl('');
+    };
+    dissapear(modal);
+}
 export function handleModalDisplay(e) {
     e.preventDefault();
     if (e.target.closest('#add-post')) {
@@ -82,6 +84,7 @@ export function handleNewPostSubmit(e) {
     console.log(formData);
     fetchPost('/post', formData)
         .then(text => console.log(text));
+    hideModal();
 }
 
 
