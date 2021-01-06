@@ -36,7 +36,8 @@
         @endif
         </main>
     </div>
-    <x-modal />
+    <x-modal />    
+    <x-banner />
     @stack('modals')
 
     @livewireScripts
