@@ -21304,18 +21304,18 @@ var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-backgrou
 });
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dropHandler"]);
 /*============================
-======= Modal Component 
-=============================*/
-
-modal.addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
-/*============================
 ======== Home Section 
 =============================*/
 //Handle any form submit from home section as new comments or likes
 
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleHomeSubmit"]);
 /*============================
-==== Handle modal new post 
+======= Modal Component 
+=============================*/
+
+modal.addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
+/*============================
+===== Modal - new post 
 =============================*/
 // plus button
 

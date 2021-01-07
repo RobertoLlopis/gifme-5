@@ -17,13 +17,6 @@ const modal = $('#modal-background-layer');
 );
 $('body').addEventListener('drop', dropHandler);
 
-
-/*============================
-======= Modal Component 
-=============================*/
-
-modal.addEventListener('click', handleModalClick);
-
 /*============================
 ======== Home Section 
 =============================*/
@@ -32,7 +25,13 @@ modal.addEventListener('click', handleModalClick);
 $('.home').addEventListener('submit', handleHomeSubmit);
 
 /*============================
-==== Handle modal new post 
+======= Modal Component 
+=============================*/
+
+modal.addEventListener('click', handleModalClick);
+
+/*============================
+===== Modal - new post 
 =============================*/
 
 // plus button
