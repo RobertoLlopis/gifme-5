@@ -8,4 +8,5 @@
         @endforeach
     </div>
 </section>
+<x-sidebar/>
 @endsection

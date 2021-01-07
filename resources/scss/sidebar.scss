@@ -1,3 +1,7 @@
 .sidebar{
-    width: 30%;
+    @include flex-column;
+    justify-content: flex-start;
+    width: 15%;
+    padding-top: 3rem;
+    
 }

@@ -32,7 +32,6 @@
             {{$slot}}
         @else
             @yield('home', '')
-            @yield('sidebar', '')
         @endif
         </main>
     </div>

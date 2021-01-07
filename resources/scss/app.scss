@@ -9,9 +9,14 @@
 @import 'home';
 @import 'sidebar';
 
+i{
+    cursor: pointer;
+}
+
 .main-cnt{
     @include flex-row;
-}
+    align-items: flex-start;
+}  
 
 .card{
     @include flex-column;
@@ -44,6 +49,6 @@
     transition: opacity 0.5s ease-out;
     background-color: rgba(95, 95, 95, 0.562);
     > div {
-        display:none;
+        display:none; 
     }
 }
