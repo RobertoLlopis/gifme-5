@@ -27,15 +27,16 @@
         @livewire('navigation-dropdown')
 
         <!-- Page Content -->
-        <main class="w-screen main-cnt">
-        @if(isset($slot))
+        <main class="w-screen main-cnt {{ $_SERVER['REQUEST_URI'] == '/profile' ? 'bg-purple-100' : ''}}">
+            @if(isset($slot))
             {{$slot}}
-        @else
+            @else
             @yield('home', '')
-        @endif
+            @yield('profile', '')
+            @endif
         </main>
     </div>
-    <x-modal />    
+    <x-modal />
     <x-banner />
     @stack('modals')
 

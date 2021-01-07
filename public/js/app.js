@@ -21286,10 +21286,14 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
-/* harmony import */ var _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dragAndDrop */ "./resources/js/dragAndDrop.js");
+/* harmony import */ var _homeListeners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./homeListeners */ "./resources/js/homeListeners.js");
+/* harmony import */ var _profileListeners__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profileListeners */ "./resources/js/profileListeners.js");
+/* harmony import */ var _dragAndDrop__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dragAndDrop */ "./resources/js/dragAndDrop.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
+
+
 
 
 
@@ -21300,15 +21304,29 @@ var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-backgrou
 =============================*/
 
 ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave'].forEach(function (evt) {
-  return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener(evt, _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dragEventHandler"]);
+  return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener(evt, _dragAndDrop__WEBPACK_IMPORTED_MODULE_4__["dragEventHandler"]);
 });
-Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dropHandler"]);
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_4__["dropHandler"]);
 /*============================
 ======== Home Section 
 =============================*/
-//Handle any form submit from home section as new comments or likes
 
-Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleHomeSubmit"]);
+if (window.location.href.includes('home')) {
+  //Handle any form submit from home section as new comments or likes
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
+}
+
+;
+/*============================
+======= Profile Section 
+=============================*/
+
+if (window.location.href.includes('profile')) {
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
+}
+
+;
 /*============================
 ======= Modal Component 
 =============================*/
@@ -21400,27 +21418,18 @@ function dragEventHandler(e) {
 
 /***/ }),
 
-/***/ "./resources/js/listeners.js":
-/*!***********************************!*\
-  !*** ./resources/js/listeners.js ***!
-  \***********************************/
-/*! exports provided: newGifCnt, handleHomeSubmit, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
+/***/ "./resources/js/homeListeners.js":
+/*!***************************************!*\
+  !*** ./resources/js/homeListeners.js ***!
+  \***************************************/
+/*! exports provided: handleHomeSubmit */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeNewPostUrl", function() { return changeNewPostUrl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleCustomUrlChange", function() { return handleCustomUrlChange; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 
-var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
-var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
 function handleHomeSubmit(e) {
   e.preventDefault();
 
@@ -21432,6 +21441,29 @@ function handleHomeSubmit(e) {
     });
   }
 }
+
+/***/ }),
+
+/***/ "./resources/js/listeners.js":
+/*!***********************************!*\
+  !*** ./resources/js/listeners.js ***!
+  \***********************************/
+/*! exports provided: newGifCnt, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeNewPostUrl", function() { return changeNewPostUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleCustomUrlChange", function() { return handleCustomUrlChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+
+var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
+var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
     hideModal();
@@ -21502,6 +21534,51 @@ function handleNewPostSubmit(e) {
     return console.log(text);
   });
   hideModal();
+}
+
+/***/ }),
+
+/***/ "./resources/js/profileListeners.js":
+/*!******************************************!*\
+  !*** ./resources/js/profileListeners.js ***!
+  \******************************************/
+/*! exports provided: showIconLayer, hideIconLayer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showIconLayer", function() { return showIconLayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideIconLayer", function() { return hideIconLayer; });
+function showIconLayer(e) {
+  e.stopPropagation();
+
+  if (e.target.closest('.profile-post')) {
+    resetIconLayers();
+    var cell = e.target.closest('.profile-post');
+    cell.querySelector('.icon-layer').classList.remove('hidden');
+    cell.querySelector('.icon-layer').classList.add('flex');
+  }
+
+  ;
+}
+function hideIconLayer(e) {
+  e.stopPropagation();
+
+  if (e.target.classList.contains('profile-post')) {
+    resetIconLayers();
+  }
+
+  ;
+}
+
+function resetIconLayers() {
+  var displayedLayers = document.querySelectorAll('.icon-layer');
+  displayedLayers.forEach(function (elem) {
+    if (elem.classList.contains('flex')) {
+      elem.classList.remove('flex');
+      elem.classList.add('hidden');
+    }
+  });
 }
 
 /***/ }),

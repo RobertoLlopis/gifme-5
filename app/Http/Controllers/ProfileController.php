@@ -9,7 +9,6 @@ class ProfileController extends Controller
 {
     public function index($id)
     {
-        //Recabar la info de los posts as $posts
         return view('profile', ['posts' => $this->getPostsCardsInfo($id)]);
     }
 
