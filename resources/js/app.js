@@ -3,7 +3,9 @@ require('./bootstrap');
 require('alpinejs');
 
 import { $ } from './utils.js';
-import { handleHomeSubmit, handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit } from './listeners';
+import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit } from './listeners';
+import { handleHomeSubmit } from './homeListeners';
+import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 
 const modal = $('#modal-background-layer');
@@ -20,9 +22,18 @@ $('body').addEventListener('drop', dropHandler);
 /*============================
 ======== Home Section 
 =============================*/
+if (window.location.href.includes('home')) {
+    //Handle any form submit from home section as new comments or likes
+    $('.home').addEventListener('submit', handleHomeSubmit);
+};
 
-//Handle any form submit from home section as new comments or likes
-$('.home').addEventListener('submit', handleHomeSubmit);
+/*============================
+======= Profile Section 
+=============================*/
+if (window.location.href.includes('profile')) {
+    $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
+    $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
+};
 
 /*============================
 ======= Modal Component 
