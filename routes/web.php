@@ -41,7 +41,7 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 Route::get('/getUsers', [HomeController::class, 'getUsers']);
 
 // Getting following list by id
-Route::get('/following/{id}', [FollowingUserController::class, 'getAllFollowingById']);
+Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
 
 // Getting posts by id
 Route::get('/posts/{id}', [ProfileController::class, 'getPostsCardsInfo']);

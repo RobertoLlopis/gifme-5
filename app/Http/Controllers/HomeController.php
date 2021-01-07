@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FollowingUser;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -15,9 +17,14 @@ class HomeController extends Controller
     }
     public function index()
     {
+
+        $user = Auth::user();
+
         //Recabar la info de los posts as $posts
         $posts = $this->getPostsInfo();
-        return view('home', compact('posts'));
+        $following = $this->getAllFollowingById($user->id);
+        
+        return view('home', compact('posts','following'));
     }
 
     public function getPostsInfo(){
@@ -32,6 +39,18 @@ class HomeController extends Controller
         return $outputPosts;
         //return view('delete',['post'=> $outputPosts[1]]);
     }
+
+    public function getAllFollowingById($id){
+        $followingUsers = FollowingUser::all()->where('user_id',$id);
+
+        foreach ($followingUsers as $users){
+            $users->getFollowingUserInfo();
+        }
+
+        return $followingUsers;
+
+    }
+
     public function addComment(Request $request){
       return dd($request->all());
     }

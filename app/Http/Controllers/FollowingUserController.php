@@ -23,16 +23,7 @@ class FollowingUserController extends Controller
 
         return $posts;
     }
-    public function getAllFollowingById($id){
-        $followingUsers = FollowingUser::all()->where('user_id',$id);
-
-        foreach ($followingUsers as $users){
-            $users->getFollowingUserInfo();
-        }
-
-        return $followingUsers;
-
-    }
+    
 
     
 }
