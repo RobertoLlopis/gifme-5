@@ -8,7 +8,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        //Recabar la info de los posts as $posts
+        //recabar info de Posts minificada
         return view('profile');
     }
 }

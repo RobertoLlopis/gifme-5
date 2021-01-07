@@ -16,7 +16,8 @@ class HomeController extends Controller
     public function index()
     {
         //Recabar la info de los posts as $posts
-        return view('home', ['posts' => $this->getPostsInfo()]);
+        $posts = $this->getPostsInfo();
+        return view('home', compact('posts'));
     }
 
     public function getPostsInfo(){
