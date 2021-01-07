@@ -6,7 +6,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikePostController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 //Display
 Route::middleware(['auth:sanctum', 'verified'])->get('/', [HomeController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::middleware(['auth:sanctum', 'verified'])->get('/profile', [ProfileController::class, 'index']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{user_id}', [ProfileController::class, 'index']);
 
 // Creating elements
 Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");

@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function index($id)
+    public function index($user_id)
     {
-        return view('profile', ['posts' => $this->getPostsCardsInfo($id)]);
+        return view('profile', ['posts' => $this->getPostsCardsInfo($user_id)]);
     }
 
-    public function getPostsCardsInfo($id){
-        $profilePosts = Post::all()->where('user_id',$id);
+    public function getPostsCardsInfo($user_id){
+        $profilePosts = Post::all()->where('user_id',$user_id);
         $outputPosts = [];
 
         foreach ($profilePosts as $post){
