@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DislikePostController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikePostController;
 use Illuminate\Support\Facades\Route;
 
