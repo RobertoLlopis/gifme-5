@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\DislikePostController;
+use App\Http\Controllers\FollowingUserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikePostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +37,12 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 
 // Getting users foro listing when "@"
 Route::get('/getUsers', [HomeController::class, 'getUsers']);
+
+// Getting following list by id
+Route::get('/following/{id}', [FollowingUserController::class, 'getAllFollowingById']);
+
+// Getting posts by id
+Route::get('/posts/{id}', [ProfileController::class, 'getPostsCardsInfo']);
 
 
 
