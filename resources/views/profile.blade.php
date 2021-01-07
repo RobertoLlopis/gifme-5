@@ -6,12 +6,20 @@
 
     <div class="container mx-auto flex items-center flex-wrap py-8 pb-12">
 
-        <header id="profile-info" class="w-full flex top-0 px-12 pt-4 pb-8">
+        <header id="profile-info" data-user-id="{{$user_id}}" class="w-full flex top-0 px-12 pt-4 pb-8">
             <div class="flex-shrink-0 w-40 h-40 xl:h-60 xl:w-60">
                 <img class="h-40 w-40 xl:h-60 xl:w-60 rounded-full border-purple-900 border-2" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt="">
             </div>
             <div id="user-info-container" class="w-auto px-7">
-                <div class="user-info-row w-full | text-3xl text-purple-900 font-bold | py-2">$user_name</div>
+                <div class="user-info-row w-full | text-3xl text-purple-900 font-bold | py-2">
+                    <h2 class="w-min inline-block">$user_name</h2>
+                    <button id="profile-follow" type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-300 hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        Follow
+                    </button>
+                </div>
                 <div class="user-info-row | w-full px-10 flex justify-around items-center | text-xl text-purple-900 font-semibold | py-1"><span>$gifs gifs</span><span>$followers followers</span><span>$following following</span></div>
                 <div class="user-info-row w-full pt-3">
                     <h2 class="text-xl text-purple-900 font-semibold">$profile_title | Lorem ipsum dolor sit amet conse</h2>

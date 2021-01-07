@@ -9,7 +9,7 @@ class FollowingUser extends Model
 {
     use HasFactory;
 
-    protected $hidden = ['updated_at','created_at','user_id','user_following_id'];
+    protected $hidden = ['updated_at', 'created_at', 'user_id'];
 
     public function getFollowingUserInfo()
     {
@@ -19,10 +19,10 @@ class FollowingUser extends Model
 
         return $collection->except($this->hidden);
     }
-    
-    public function followingUser(){
 
-        return $this->hasOne(User::class,'id','user_following_id')->select('user_name','profile_photo_path');
+    public function followingUser()
+    {
+
+        return $this->hasOne(User::class, 'id', 'user_following_id')->select('name', 'user_name', 'profile_photo_path');
     }
-    
 }

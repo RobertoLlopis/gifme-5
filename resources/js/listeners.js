@@ -12,7 +12,9 @@ import {
 export const newGifCnt = $('#last-load-img');
 const gifUrlInput = $('input[name="custom-gif-url"]');
 
-
+export function handleFollowClick(e) {
+    fetchPost(`/follow/${$('#profile-info').dataset['userId']}`);
+}
 export function handleModalClick(e) {
     if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
         hideModal();

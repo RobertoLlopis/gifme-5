@@ -5,7 +5,7 @@ export function $(selector) {
     return document.querySelector(selector);
 }
 
-export function fetchPost(url, formData) {
+export function fetchPost(url, formData = null) {
 
     return fetch(url, {
         method: 'POST',

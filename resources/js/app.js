@@ -3,7 +3,7 @@ require('./bootstrap');
 require('alpinejs');
 
 import { $ } from './utils.js';
-import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit } from './listeners';
+import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick } from './listeners';
 import { handleHomeSubmit } from './homeListeners';
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
@@ -33,6 +33,7 @@ if (window.location.href.includes('home')) {
 if (window.location.href.includes('profile')) {
     $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
     $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
+    $('#profile-follow').addEventListener('click', handleFollowClick);
 };
 
 /*============================

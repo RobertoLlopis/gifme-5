@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment");
 Route::middleware(['auth:sanctum', 'verified'])->post('/likePost', [LikePostController::class, 'createLikePost'])->name("create_like_post");
 Route::middleware(['auth:sanctum', 'verified'])->post('/dislikePost', [DislikePostController::class, 'createDislikePost'])->name("create_dislike_post");
-
+Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_id}', [FollowingUserController::class, 'createFollowing']);
 // Destroying elements
 Route::middleware(['auth:sanctum', 'verified'])->delete('/post/{id}', [ArticlesController::class, 'deletePost'])->name("delete_article");
 
