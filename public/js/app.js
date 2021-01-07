@@ -21279,12 +21279,55 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+/* harmony import */ var _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dragAndDrop */ "./resources/js/dragAndDrop.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
+
+
+
+
+var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
+/*============================
+=========== Body 
+=============================*/
+
+['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave'].forEach(function (evt) {
+  return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener(evt, _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dragEventHandler"]);
+});
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_2__["dropHandler"]);
+/*============================
+======== Home Section 
+=============================*/
+//Handle any form submit from home section as new comments or likes
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleHomeSubmit"]);
+/*============================
+======= Modal Component 
+=============================*/
+
+modal.addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
+/*============================
+===== Modal - new post 
+=============================*/
+// plus button
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#add-post').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalDisplay"]); // input file change
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post input[type=file]').addEventListener('change', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleNewPostFileChange"]); // input custom url change
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name=custom-gif-url]').addEventListener('keyup', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleCustomUrlChange"]); // submit
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleNewPostSubmit"]); // Cancel button
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#cancel-new-post').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
 
 /***/ }),
 
@@ -21317,6 +21360,284 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/dragAndDrop.js":
+/*!*************************************!*\
+  !*** ./resources/js/dragAndDrop.js ***!
+  \*************************************/
+/*! exports provided: dropHandler, dragEventHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dropHandler", function() { return dropHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dragEventHandler", function() { return dragEventHandler; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+
+ //on drop listener
+
+function dropHandler(e) {
+  e.stopPropagation();
+  e.preventDefault(); //get the data when dropped
+
+  var dataTransfer = e.dataTransfer || e.originalEvent && e.originalEvent.dataTransfer; //In case it is a file coming from the Operative System
+
+  dataTransfer.effectAllowed = 'move';
+  var file = dataTransfer.files[0];
+  _listeners__WEBPACK_IMPORTED_MODULE_1__["newGifCnt"].closest('div').style.display = 'block';
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["showModal"])(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post'));
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["uploadFileToImgur"])(file).then(function (res) {
+    return Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["changeNewPostUrl"])(res.data.link);
+  });
+}
+function dragEventHandler(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+/***/ }),
+
+/***/ "./resources/js/listeners.js":
+/*!***********************************!*\
+  !*** ./resources/js/listeners.js ***!
+  \***********************************/
+/*! exports provided: newGifCnt, handleHomeSubmit, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeNewPostUrl", function() { return changeNewPostUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleCustomUrlChange", function() { return handleCustomUrlChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+
+var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
+var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
+function handleHomeSubmit(e) {
+  e.preventDefault();
+
+  if (e.target.classList.contains('article-add-comment')) {
+    var postId = e.target.closest('article').id;
+    var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target, [['postId', postId]]);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/comment', formData).then(function (text) {
+      return console.log(text);
+    });
+  }
+}
+function handleModalClick(e) {
+  if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
+    hideModal();
+  }
+}
+
+function hideModal() {
+  var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-background-layer');
+
+  if (modal.querySelector('div').style.display != 'none') {
+    modal.querySelector('div').style.display = 'none';
+    newGifCnt.closest('div').style.display = 'none';
+    changeNewPostUrl('');
+  }
+
+  ;
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(modal);
+}
+
+function handleModalDisplay(e) {
+  e.preventDefault();
+
+  if (e.target.closest('#add-post')) {
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["showModal"])(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post'));
+  }
+}
+function handleNewPostFileChange(e) {
+  if (!e.target.files[0]) {
+    console.error('Not file finnaly selected or file input error');
+    return;
+  }
+
+  ;
+  newGifCnt.closest('div').style.display = 'block';
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["uploadFileToImgur"])(e.target.files[0]).then(function (res) {
+    changeNewPostUrl(res.data.link);
+  });
+}
+function changeNewPostUrl(url) {
+  newGifCnt.src = url;
+  gifUrlInput.value = url;
+}
+var handleCustomUrlChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["testImage"])(e.target.value, function (url, result) {
+    if (!result) {
+      alert('custom url of gif not valid');
+      return;
+    }
+
+    ;
+    alert('url valid!!');
+    newGifCnt.closest('div').style.display = 'block';
+    changeNewPostUrl(url);
+  });
+}, 1000);
+function handleNewPostSubmit(e) {
+  e.preventDefault();
+  console.log(e.target.elements);
+
+  if (!newGifCnt.src) {
+    alert('You need to load at least a gif');
+    return;
+  }
+
+  var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target);
+  console.log(formData);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/post', formData).then(function (text) {
+    return console.log(text);
+  });
+  hideModal();
+}
+
+/***/ }),
+
+/***/ "./resources/js/utils.js":
+/*!*******************************!*\
+  !*** ./resources/js/utils.js ***!
+  \*******************************/
+/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "$", function() { return $; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchPost", function() { return fetchPost; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadFileToImgur", function() { return uploadFileToImgur; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFileFormData", function() { return createFileFormData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFormData", function() { return createFormData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dissapear", function() { return dissapear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fadeIn", function() { return fadeIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return showModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounceEvent", function() { return debounceEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testImage", function() { return testImage; });
+var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+var username = document.head.querySelector("[name~=username]").content;
+function $(selector) {
+  return document.querySelector(selector);
+}
+function fetchPost(url, formData) {
+  return fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      "X-CSRF-Token": csrfToken
+    }
+  }).then(function (response) {
+    return response.text();
+  })["catch"](function (error) {
+    return console.error(error);
+  });
+}
+;
+function uploadFileToImgur(file) {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Client-ID b1ea4f940c54efd");
+  var formData = createFileFormData(file);
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formData,
+    redirect: 'follow'
+  };
+  return fetch("https://api.imgur.com/3/image", requestOptions).then(function (response) {
+    return response.json();
+  })["catch"](function (error) {
+    return console.log('error', error);
+  });
+}
+function createFileFormData(file) {
+  var toAppend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var form_data = new FormData();
+  form_data.append('image', file);
+  toAppend && toAppend.forEach(function (elem) {
+    return form_data.append(elem[0], elem[1]);
+  });
+  return form_data;
+}
+function createFormData(form) {
+  var toAppend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var formData = new FormData(form);
+  toAppend && toAppend.forEach(function (e) {
+    return formData.append(e[0], e[1]);
+  });
+  return formData;
+}
+function dissapear(element) {
+  //Element should have transition: opacity property in css
+  element.style.opacity = '0';
+  setTimeout(function () {
+    return element.style.display = 'none';
+  }, 300);
+}
+function fadeIn(element) {
+  //Element should have transition: opacity property in css
+  element.style.display = 'flex';
+  element.style.opacity = '1';
+}
+function showModal(submodal) {
+  var modal = $('#modal-background-layer');
+  fadeIn(modal);
+  submodal.style.display = 'flex';
+}
+function debounceEvent(callback, time) {
+  var interval;
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    clearTimeout(interval);
+    interval = setTimeout(function () {
+      interval = null;
+      callback.apply(void 0, args);
+    }, time);
+  };
+}
+;
+function testImage(url, callback, timeout) {
+  timeout = timeout || 5000;
+  var timedOut = false,
+      timer;
+  var img = new Image();
+
+  img.onerror = img.onabort = function () {
+    if (!timedOut) {
+      clearTimeout(timer);
+      callback(url, "");
+    }
+  };
+
+  img.onload = function () {
+    if (!timedOut) {
+      clearTimeout(timer);
+      callback(url, "success");
+    }
+  };
+
+  img.src = url;
+  timer = setTimeout(function () {
+    timedOut = true; // reset .src to invalid URL so it stops previous
+    // loading, but doesn't trigger new load
+
+    img.src = "//!!!!/test.jpg";
+    callback(url, "");
+  }, timeout);
+}
 
 /***/ }),
 

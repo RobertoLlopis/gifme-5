@@ -30,8 +30,13 @@ class HomeController extends Controller
 
         return $outputPosts;
         //return view('delete',['post'=> $outputPosts[1]]);
-
     }
+    public function addComment(Request $request){
+      return dd($request->all());
+    }
+    public function addPost(Request $request){
+        return dd($request->all());
+      }
 
     public function getUsers(){
         // return User::all()->select('id','user_name');
