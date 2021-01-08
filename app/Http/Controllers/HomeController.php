@@ -25,8 +25,8 @@ class HomeController extends Controller
         $following = $this->getAllFollowingById(Auth::user()->id);
         $suggestions = $this->getFollowingSuggestions();
 
-        // return view('home', compact('posts', 'following'));
-        return compact('posts', 'following','suggestions');
+        return view('home', compact('posts', 'following', 'suggestions'));
+        //return compact('posts', 'following','suggestions');
     }
 
     public function getPostsInfo()
@@ -53,12 +53,13 @@ class HomeController extends Controller
         return $outputUsers;
     }
 
-    Public function getFollowingSuggestions(){
+    public function getFollowingSuggestions()
+    {
         $suggestions = User::inRandomOrder()
-                    ->whereNotIn('id', [Auth::user()->id])
-                    ->select('name', 'user_name', 'profile_photo_path','id')
-                    ->limit(5)
-                    ->get();
+            ->whereNotIn('id', [Auth::user()->id])
+            ->select('name', 'user_name', 'profile_photo_path', 'id')
+            ->limit(5)
+            ->get();
 
         return $suggestions;
     }

@@ -8,5 +8,5 @@
         @endforeach
     </div>
 </section>
-<x-sidebar :following="$following" />
+<x-sidebar :following="$following" :suggestions="$suggestions" />
 @endsection
