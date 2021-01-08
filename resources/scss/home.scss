@@ -67,8 +67,11 @@
         justify-content: space-between;
         font-size: 1.3rem;
     }
-    .likes-info{
+    .likes-info, .comments-info{
+        display: inline-block;
+        min-width: 2.5rem;
         font-size: 0.8rem;
+        margin-right: 0.5rem;
     }
     margin-bottom: 3rem;
 }
