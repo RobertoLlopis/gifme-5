@@ -14,6 +14,8 @@ class Post extends Model
 
     protected $hiddenForPost = ['updated_at','created_at','slug','title','user_id'];
 
+    protected $hiddenForPostCards = ['updated_at','created_at','slug','title','user_id','description'];
+
     public function getPostInfo(){
         $this->comments;
         $this->user;
@@ -28,6 +30,18 @@ class Post extends Model
         $collection->put('dislike_count',$this->dislikesPosts->count());
 
         return $collection->except($this->hiddenForPost);
+    }
+
+    public function getPostsCardsInfo(){
+
+        $collection = collect($this);
+
+        // counting items into collection
+        $collection->put('comments_count',$this->comments->count());
+        $collection->put('likes_count',$this->likesPosts->count());
+        $collection->put('dislike_count',$this->dislikesPosts->count());
+
+        return $collection->except($this->hiddenForPostCards);
     }
 
     public function comments()
@@ -51,6 +65,10 @@ class Post extends Model
     public function dislikesPosts()
     {
         return $this->hasManyThrough(User::class,DislikePost::class,'user_id','id')->select('name','profile_photo_path');
+    }
+
+    public static function getGifsCount($user){
+        return $user->hasMany(Post::class)->count();
     }
 
     

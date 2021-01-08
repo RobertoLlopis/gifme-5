@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FollowingUserController extends Controller
 {
+    
     public function createFollowing($user_following_id)
     {
         $article = new FollowingUser();

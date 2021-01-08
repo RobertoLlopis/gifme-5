@@ -19,14 +19,13 @@ class HomeController extends Controller
     public function index()
     {
 
-        $user = Auth::user();
-
         //Recabar la info de los posts as $posts
         $posts = $this->getPostsInfo();
-        $following = $this->getAllFollowingById($user->id);
+        $following = $this->getAllFollowingById(Auth::user()->id);
+        $suggestions = $this->getFollowingSuggestions();
 
-        return view('home', compact('posts', 'following'));
-        //return compact('posts', 'following');
+        // return view('home', compact('posts', 'following'));
+        return compact('posts', 'following','suggestions');
     }
 
     public function getPostsInfo()
@@ -54,6 +53,16 @@ class HomeController extends Controller
         return $followingUsers;
     }
 
+    Public function getFollowingSuggestions(){
+        $suggestions = User::inRandomOrder()
+                    ->whereNotIn('id', [Auth::user()->id])
+                    ->select('name', 'user_name', 'profile_photo_path','id')
+                    ->limit(5)
+                    ->get();
+
+        return $suggestions;
+    }
+
     public function addComment(Request $request)
     {
         return dd($request->all());
@@ -66,6 +75,6 @@ class HomeController extends Controller
     public function getUsers()
     {
         // return User::all()->select('id','user_name');
-        return User::all('id', 'user_name');
+        return User::all();
     }
 }
