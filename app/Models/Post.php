@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -22,6 +23,7 @@ class Post extends Model
         $this->user;
         $this->likesPosts;
         $this->dislikesPosts;
+        $this->likeStatus;
 
         $collection = collect($this);
 
@@ -61,12 +63,20 @@ class Post extends Model
 
     public function likesPosts()
     {
-        return $this->hasManyThrough(User::class, LikePost::class, 'user_id', 'id')->select('name', 'profile_photo_path');
+        // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
+        return $this->hasMany(LikeDislikePost::class)->where('status',1);
     }
 
     public function dislikesPosts()
     {
-        return $this->hasManyThrough(User::class, DislikePost::class, 'user_id', 'id')->select('name', 'profile_photo_path');
+        // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
+        return $this->hasMany(LikeDislikePost::class)->where('status',2);
+    }
+    
+
+    public function likeStatus(){
+        return $this->hasOne(LikeDislikePost::class)->where('user_id',9)->select('status');
+
     }
 
     public static function getGifsCount($user)
