@@ -22,7 +22,7 @@ $('body').addEventListener('drop', dropHandler);
 /*============================
 ======== Home Section 
 =============================*/
-if (window.location.href.includes('home') || window.location.href.split('/').pop() == '') {
+if (window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '') {
     //Handle any form submit from home section as new comments or likes
     $('.home').addEventListener('submit', handleHomeSubmit);
     $('.home').addEventListener('click', handleHomeClick);

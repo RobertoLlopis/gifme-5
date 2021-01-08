@@ -1,6 +1,9 @@
 import {
-    createFormData,
+    $,
     fetchPost,
+    createFormData,
+    createFollowingUser,
+    dissapear
 } from './utils.js';
 import { handleFollowClick } from './listeners';
 
@@ -30,6 +33,11 @@ export function handleSidebarClick(e) {
         if (userId) window.location.href = `/profile/${userId}`;
     }
     if (e.target.closest('.follow-button')) {
-        handleFollowClick(e, e.target.closest('.suggestion'));
+        let user = e.target.closest('.follow');
+        fetch(`/user/${user.dataset['userId']}`).then(res => res.json())
+            .then(users => $('#following-container').insertAdjacentHTML('beforeend', createFollowingUser(users[0])));
+        handleFollowClick(e, user);
+        dissapear(user);
+        user.remove();
     }
 }

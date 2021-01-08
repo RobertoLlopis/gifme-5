@@ -15,7 +15,7 @@ class ProfileController extends Controller
         $profile = $this->getProfileUserInfo($user_id);
         $posts = $this->getPostsCardsInfo($user_id);
 
-        return view('profile', compact('posts', 'user_id'));
+        return view('profile', compact('posts', 'profile'));
         //return compact('profile', 'posts', 'user_id');
     }
 

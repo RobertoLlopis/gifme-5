@@ -34,17 +34,26 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_i
 Route::middleware(['auth:sanctum', 'verified'])->delete('/post/{id}', [ArticlesController::class, 'deletePost'])->name("delete_article");
 
 
-// Getting info for posts
-Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
+/*============================
+======= Retrieve Info
+=============================*/
 
-// Getting users foro listing when "@"
+//=================== Getting USERS
+// for listing when "@"
 Route::get('/getUsers', [HomeController::class, 'getUsers']);
+// by ID
+Route::get('/user/{user_id}', [HomeController::class, 'getUserInfo']);
 
-// Getting following list by id
-Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
-
+//=================== Getting POSTS
 // Getting posts by id
 Route::get('/posts/{id}', [ProfileController::class, 'getPostsCardsInfo']);
+//raw info
+Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
+
+//=================== Getting FOLLOWING
+// list by ID
+Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
+
 
 
 

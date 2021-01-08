@@ -104,3 +104,20 @@ export function testImage(url, callback, timeout) {
         callback(url, "");
     }, timeout);
 }
+
+
+export function createFollowingUser(user) {
+    return `<div data-user-id="${user['id']}" class="follow flex items-center mb-2">
+            <div class="follow-avatar cursor-pointer flex-shrink-0 h-20 w-20">
+                <img class="h-20 w-20 rounded-full border-purple-900 border-2" src="${user['profile_photo_url']}" alt="user-avatar">
+            </div>
+            <div class="ml-4">
+                <div class="follow-name cursor-pointer text-lg font-medium text-purple-900">
+                   ${user['user_name']}
+                </div>
+                <div class="text-md text-gray-500">
+                    ${user['name']}
+                </div>
+            </div>
+        </div>`
+}

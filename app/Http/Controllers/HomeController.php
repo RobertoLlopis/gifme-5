@@ -78,4 +78,8 @@ class HomeController extends Controller
         // return User::all()->select('id','user_name');
         return User::all();
     }
+    public function getUserInfo($user_id)
+    {
+        return User::where('id', $user_id)->get();
+    }
 }

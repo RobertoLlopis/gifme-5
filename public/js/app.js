@@ -21311,7 +21311,7 @@ Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('dr
 ======== Home Section 
 =============================*/
 
-if (window.location.href.includes('home') || window.location.href.split('/').pop() == '') {
+if (window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '') {
   //Handle any form submit from home section as new comments or likes
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeClick"]);
@@ -21466,7 +21466,15 @@ function handleSidebarClick(e) {
   }
 
   if (e.target.closest('.follow-button')) {
-    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, e.target.closest('.suggestion'));
+    var user = e.target.closest('.follow');
+    fetch("/user/".concat(user.dataset['userId'])).then(function (res) {
+      return res.json();
+    }).then(function (users) {
+      return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#following-container').insertAdjacentHTML('beforeend', Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFollowingUser"])(users[0]));
+    });
+    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, user);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(user);
+    user.remove();
   }
 }
 
@@ -21619,7 +21627,7 @@ function resetIconLayers() {
 /*!*******************************!*\
   !*** ./resources/js/utils.js ***!
   \*******************************/
-/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage */
+/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage, createFollowingUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21634,6 +21642,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return showModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounceEvent", function() { return debounceEvent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testImage", function() { return testImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFollowingUser", function() { return createFollowingUser; });
 var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
 var username = document.head.querySelector("[name~=username]").content;
 function $(selector) {
@@ -21747,6 +21756,9 @@ function testImage(url, callback, timeout) {
     img.src = "//!!!!/test.jpg";
     callback(url, "");
   }, timeout);
+}
+function createFollowingUser(user) {
+  return "<div data-user-id=\"".concat(user['id'], "\" class=\"follow flex items-center mb-2\">\n            <div class=\"follow-avatar cursor-pointer flex-shrink-0 h-20 w-20\">\n                <img class=\"h-20 w-20 rounded-full border-purple-900 border-2\" src=\"").concat(user['profile_photo_url'], "\" alt=\"user-avatar\">\n            </div>\n            <div class=\"ml-4\">\n                <div class=\"follow-name cursor-pointer text-lg font-medium text-purple-900\">\n                   ").concat(user['user_name'], "\n                </div>\n                <div class=\"text-md text-gray-500\">\n                    ").concat(user['name'], "\n                </div>\n            </div>\n        </div>");
 }
 
 /***/ }),
