@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     public $posts;
+    public $following;
     public function __construct()
     {
         //Coger info de Post model
@@ -24,13 +25,13 @@ class HomeController extends Controller
         $following = $this->getAllFollowingById(Auth::user()->id);
         $suggestions = $this->getFollowingSuggestions();
 
-        // return view('home', compact('posts', 'following'));
-        return compact('posts', 'following','suggestions');
+        return view('home', compact('posts', 'following', 'suggestions'));
+        //return compact('posts', 'following','suggestions');
     }
 
     public function getPostsInfo()
     {
-        $posts = Post::all();
+        $posts = Post::all()->take(5);
         $outputPosts = [];
 
         foreach ($posts as $post) {
@@ -45,20 +46,20 @@ class HomeController extends Controller
     public function getAllFollowingById($id)
     {
         $followingUsers = FollowingUser::all()->where('user_id', $id);
-
-        foreach ($followingUsers as $users) {
-            $users->getFollowingUserInfo();
+        $outputUsers = [];
+        foreach ($followingUsers as $user) {
+            array_push($outputUsers, $user->getFollowingUserInfo());
         }
-
-        return $followingUsers;
+        return $outputUsers;
     }
 
-    Public function getFollowingSuggestions(){
+    public function getFollowingSuggestions()
+    {
         $suggestions = User::inRandomOrder()
-                    ->whereNotIn('id', [Auth::user()->id])
-                    ->select('name', 'user_name', 'profile_photo_path','id')
-                    ->limit(5)
-                    ->get();
+            ->whereNotIn('id', [Auth::user()->id])
+            ->select('name', 'user_name', 'profile_photo_path', 'id')
+            ->limit(5)
+            ->get();
 
         return $suggestions;
     }

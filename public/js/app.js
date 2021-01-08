@@ -21311,9 +21311,11 @@ Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('dr
 ======== Home Section 
 =============================*/
 
-if (window.location.href.includes('home')) {
+if (window.location.href.includes('home') || window.location.href.split('/').pop() == '') {
   //Handle any form submit from home section as new comments or likes
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeClick"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.sidebar').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleSidebarClick"]);
 }
 
 ;
@@ -21324,6 +21326,9 @@ if (window.location.href.includes('home')) {
 if (window.location.href.includes('profile')) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', function (e) {
+    return Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-info'));
+  });
 }
 
 ;
@@ -21422,13 +21427,17 @@ function dragEventHandler(e) {
 /*!***************************************!*\
   !*** ./resources/js/homeListeners.js ***!
   \***************************************/
-/*! exports provided: handleHomeSubmit */
+/*! exports provided: handleHomeSubmit, handleHomeClick, handleSidebarClick */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeClick", function() { return handleHomeClick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleSidebarClick", function() { return handleSidebarClick; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+
 
 function handleHomeSubmit(e) {
   e.preventDefault();
@@ -21441,6 +21450,25 @@ function handleHomeSubmit(e) {
     });
   }
 }
+function handleHomeClick(e) {
+  console.log('fired');
+  console.log(e.target.classList);
+
+  if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
+    var userId = e.target.closest('article').id;
+    if (userId) window.location.href = "/profile/".concat(userId);
+  }
+}
+function handleSidebarClick(e) {
+  if (e.target.closest('.follow-avatar') || e.target.closest('.follow-name')) {
+    var userId = e.target.closest('.follow').dataset['userId'];
+    if (userId) window.location.href = "/profile/".concat(userId);
+  }
+
+  if (e.target.closest('.follow-button')) {
+    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, e.target.closest('.suggestion'));
+  }
+}
 
 /***/ }),
 
@@ -21448,12 +21476,13 @@ function handleHomeSubmit(e) {
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: newGifCnt, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
+/*! exports provided: newGifCnt, handleFollowClick, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleFollowClick", function() { return handleFollowClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
@@ -21464,6 +21493,9 @@ __webpack_require__.r(__webpack_exports__);
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
 var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
+function handleFollowClick(e, infoElem) {
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(infoElem.dataset['userId']));
+}
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
     hideModal();
@@ -21607,7 +21639,8 @@ var username = document.head.querySelector("[name~=username]").content;
 function $(selector) {
   return document.querySelector(selector);
 }
-function fetchPost(url, formData) {
+function fetchPost(url) {
+  var formData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   return fetch(url, {
     method: 'POST',
     body: formData,
