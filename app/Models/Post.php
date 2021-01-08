@@ -21,16 +21,16 @@ class Post extends Model
     {
         $this->comments;
         $this->user;
-        $this->likesPosts;
-        $this->dislikesPosts;
+        $this->likesUsers;
+        $this->dislikesUsers;
         $this->likeStatus;
 
         $collection = collect($this);
 
         // counting items into collection
         $collection->put('comments_count', $this->comments->count());
-        $collection->put('likes_count', $this->likesPosts->count());
-        $collection->put('dislike_count', $this->dislikesPosts->count());
+        $collection->put('likes_count', $this->likesUsers->count());
+        $collection->put('dislike_count', $this->dislikesUsers->count());
 
         return $collection->except($this->hiddenForPost);
     }
@@ -42,8 +42,8 @@ class Post extends Model
 
         // counting items into collection
         $collection->put('comments_count', $this->comments->count());
-        $collection->put('likes_count', $this->likesPosts->count());
-        $collection->put('dislike_count', $this->dislikesPosts->count());
+        $collection->put('likes_count', $this->likesUsers->count());
+        $collection->put('dislike_count', $this->dislikesUsers->count());
 
         return $collection->except($this->hiddenForPostCards);
     }
@@ -61,22 +61,26 @@ class Post extends Model
         return $this->belongsTo(User::class)->select('name', 'profile_photo_path', 'user_name');
     }
 
-    public function likesPosts()
+    public function likesUsers()
     {
         // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
-        return $this->hasMany(LikeDislikePost::class)->where('status',1);
+        return $this->hasMany(LikeDislikePost::class)->where('status', 1)
+            ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
+            ->select('users.name', 'users.user_name as user_username');
     }
 
-    public function dislikesPosts()
+    public function dislikesUsers()
     {
         // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
-        return $this->hasMany(LikeDislikePost::class)->where('status',2);
+        return $this->hasMany(LikeDislikePost::class)->where('status', 2)
+            ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
+            ->select('users.name', 'users.user_name as user_username');
     }
-    
 
-    public function likeStatus(){
-        return $this->hasOne(LikeDislikePost::class)->where('user_id',9)->select('status');
 
+    public function likeStatus()
+    {
+        return $this->hasOne(LikeDislikePost::class)->where('user_id', 9)->select('status');
     }
 
     public static function getGifsCount($user)

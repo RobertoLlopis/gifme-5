@@ -26,7 +26,7 @@ class HomeController extends Controller
         $suggestions = $this->getFollowingSuggestions();
 
         // return view('home', compact('posts', 'following', 'suggestions'));
-        return compact('posts', 'following','suggestions');
+        return compact('posts', 'following', 'suggestions');
     }
 
     public function getPostsInfo()
