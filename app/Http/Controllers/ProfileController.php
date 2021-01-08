@@ -15,8 +15,8 @@ class ProfileController extends Controller
         $profile = $this->getProfileUserInfo($user_id);
         $posts = $this->getPostsCardsInfo($user_id);
 
-        return view('profile', compact('posts', 'user_id'));
-        //return compact('profile', 'posts', 'user_id');
+        // return view('profile', compact('posts', 'user_id'));
+        return compact('profile', 'posts', 'user_id');
     }
 
     public function getPostsCardsInfo($user_id)
@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
     public function getProfileUserInfo($user_id)
     {
-        $profile_info =  User::all('user_name', 'id')->find($user_id);
+        $profile_info =  User::all('user_name', 'id','title','description')->find($user_id);
         $gifs_count = Post::getGifsCount($profile_info);
         $followers = FollowingUser::getFollowersCount($profile_info);
         $following = FollowingUser::getFollowingCount($profile_info);
