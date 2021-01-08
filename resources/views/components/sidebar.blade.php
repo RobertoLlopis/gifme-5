@@ -30,7 +30,7 @@
                 <div class="text-lg font-medium text-purple-900">
                     {{$suggestion['user_name']}}
                 </div>
-                <button type="button" class="border border-purple-500 text-purple-500 rounded-md px-4 py-0 m-2 transition duration-500 ease select-none hover:text-black hover:border-black hover:bg-yellow-300 focus:outline-none focus:shadow-outline">
+                <button type="button" class="follow-button border border-purple-500 text-purple-500 rounded-md px-4 py-0 m-2 transition duration-500 ease select-none hover:text-black hover:border-black hover:bg-yellow-300 focus:outline-none focus:shadow-outline">
                     Follow
                 </button>
             </div>

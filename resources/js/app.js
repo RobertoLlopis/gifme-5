@@ -35,7 +35,7 @@ if (window.location.href.includes('home') || window.location.href.split('/').pop
 if (window.location.href.includes('profile')) {
     $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
     $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
-    $('#profile-follow').addEventListener('click', handleFollowClick);
+    $('#profile-follow').addEventListener('click', (e) => handleFollowClick(e, $('#profile-info')));
 };
 
 /*============================

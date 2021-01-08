@@ -21326,7 +21326,9 @@ if (window.location.href.includes('home') || window.location.href.split('/').pop
 if (window.location.href.includes('profile')) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', function (e) {
+    return Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-info'));
+  });
 }
 
 ;
@@ -21434,6 +21436,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeClick", function() { return handleHomeClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleSidebarClick", function() { return handleSidebarClick; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
+
 
 function handleHomeSubmit(e) {
   e.preventDefault();
@@ -21460,6 +21464,10 @@ function handleSidebarClick(e) {
     var userId = e.target.closest('.follow').dataset['userId'];
     if (userId) window.location.href = "/profile/".concat(userId);
   }
+
+  if (e.target.closest('.follow-button')) {
+    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, e.target.closest('.suggestion'));
+  }
 }
 
 /***/ }),
@@ -21485,8 +21493,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
 var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
-function handleFollowClick(e) {
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-info').dataset['userId']));
+function handleFollowClick(e, infoElem) {
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(infoElem.dataset['userId']));
 }
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {

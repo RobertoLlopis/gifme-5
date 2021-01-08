@@ -31,7 +31,7 @@ class HomeController extends Controller
 
     public function getPostsInfo()
     {
-        $posts = Post::all();
+        $posts = Post::all()->take(5);
         $outputPosts = [];
 
         foreach ($posts as $post) {

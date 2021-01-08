@@ -2,6 +2,8 @@ import {
     createFormData,
     fetchPost,
 } from './utils.js';
+import { handleFollowClick } from './listeners';
+
 
 export function handleHomeSubmit(e) {
     e.preventDefault();
@@ -26,5 +28,8 @@ export function handleSidebarClick(e) {
     if (e.target.closest('.follow-avatar') || e.target.closest('.follow-name')) {
         let userId = e.target.closest('.follow').dataset['userId'];
         if (userId) window.location.href = `/profile/${userId}`;
+    }
+    if (e.target.closest('.follow-button')) {
+        handleFollowClick(e, e.target.closest('.suggestion'));
     }
 }
