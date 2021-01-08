@@ -4,7 +4,7 @@ require('alpinejs');
 
 import { $ } from './utils.js';
 import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick } from './listeners';
-import { handleHomeSubmit } from './homeListeners';
+import { handleHomeSubmit, handleHomeClick, handleSidebarClick } from './homeListeners';
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 
@@ -22,9 +22,11 @@ $('body').addEventListener('drop', dropHandler);
 /*============================
 ======== Home Section 
 =============================*/
-if (window.location.href.includes('home')) {
+if (window.location.href.includes('home') || window.location.href.split('/').pop() == '') {
     //Handle any form submit from home section as new comments or likes
     $('.home').addEventListener('submit', handleHomeSubmit);
+    $('.home').addEventListener('click', handleHomeClick);
+    $('.sidebar').addEventListener('click', handleSidebarClick);
 };
 
 /*============================

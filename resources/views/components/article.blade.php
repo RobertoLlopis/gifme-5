@@ -1,7 +1,7 @@
 <article id="{{$post['id']}}" class="article shadow-xl">
     <div class="article-header">
-        <div class="user-picture" style="background-image: url({{$post['user']['profile_photo_url']}});"></div>
-        <div class="article-user-name">{{$post['user']['name']}}</div>
+        <div class="user-picture cursor-pointer" style="background-image: url({{$post['user']['profile_photo_url']}});"></div>
+        <div class="article-user-name cursor-pointer">{{$post['user']['name']}}</div>
     </div>
     <div class="article-gif-container">
         <img class="gif" src="{{$post['gif']}}">

@@ -6,14 +6,15 @@ use Illuminate\View\Component;
 
 class Sidebar extends Component
 {
+    public $following;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($following)
     {
-        //
+        $this->following = $following;
     }
 
     /**

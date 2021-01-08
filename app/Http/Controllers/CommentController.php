@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 
 class CommentController extends Controller
 {
-    //
-    public function createComment(Request $request) {
+    public function createComment(Request $request)
+    {
         $this->validate($request, [
             'comment' => 'required'
         ]);

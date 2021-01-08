@@ -4,9 +4,9 @@
 <section class="home">
     <div id="articles-container" class="px-8">
         @foreach($posts as $post)
-            <x-article :post="$post"/>
+        <x-article :post="$post" />
         @endforeach
     </div>
 </section>
-<x-sidebar/>
+<x-sidebar :following="$following" />
 @endsection

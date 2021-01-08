@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     public $posts;
+    public $following;
     public function __construct()
     {
         //Coger info de Post model
@@ -45,12 +46,11 @@ class HomeController extends Controller
     public function getAllFollowingById($id)
     {
         $followingUsers = FollowingUser::all()->where('user_id', $id);
-
-        foreach ($followingUsers as $users) {
-            $users->getFollowingUserInfo();
+        $outputUsers = [];
+        foreach ($followingUsers as $user) {
+            array_push($outputUsers, $user->getFollowingUserInfo());
         }
-
-        return $followingUsers;
+        return $outputUsers;
     }
 
     Public function getFollowingSuggestions(){
