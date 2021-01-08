@@ -22,9 +22,8 @@
                 </div>
                 <div class="user-info-row | w-full px-10 flex justify-around items-center | text-xl text-purple-900 font-semibold | py-1"><span>{{$profile['gifs_count']}} gifs</span><span>{{$profile['followers']}} followers</span><span>{{$profile['following']}} following</span></div>
                 <div class="user-info-row w-full pt-3">
-                    <h2 class="text-xl text-purple-900 font-semibold">$profile_title | Lorem ipsum dolor sit amet conse</h2>
-                    <p class="text-md text-purple-900">$profile_description | Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime voluptate corporis esse ratione, voluptatum officia eos iure ducimus praesentium necessitatibus expedita vero est aspernatur! Deleniti dignissimos quo quis a dolore!
-                        Quo sint neque quae nihil quod quaerat aliquam </p>
+                    <h2 class="text-xl text-purple-900 font-semibold">{{$profile['profile_info']['title']}}</h2>
+                    <p class="text-md text-purple-900">{{$profile['profile_info']['description']}}</p>
                 </div>
             </div>
         </header>
@@ -36,7 +35,7 @@
                     <img class="hover:grow" src="{{$post['gif']}}">
                     <div class="icon-layer hidden transition hover-layer bg-gray-500 bg-opacity-50 absolute h-full w-full top-0 left-0 flex justify-center items-center">
                         <i class="fas fa-heart text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['likes_count']}}</span>
-                        <i class="far fa-dizzy text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['dislike_count']}}</span>
+                        <i class="far fa-dizzy text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['dislikes_count']}}</span>
                         <i class="fas fa-comments text-yellow-300 text-3xl"></i><span class="pl-2 text-xl font-semibold">{{$post['comments_count']}}</span>
                     </div>
                 </a>

@@ -30,7 +30,7 @@ class Post extends Model
         // counting items into collection
         $collection->put('comments_count', $this->comments->count());
         $collection->put('likes_count', $this->likesUsers->count());
-        $collection->put('dislike_count', $this->dislikesUsers->count());
+        $collection->put('dislikes_count', $this->dislikesUsers->count());
 
         return $collection->except($this->hiddenForPost);
     }
@@ -43,7 +43,7 @@ class Post extends Model
         // counting items into collection
         $collection->put('comments_count', $this->comments->count());
         $collection->put('likes_count', $this->likesUsers->count());
-        $collection->put('dislike_count', $this->dislikesUsers->count());
+        $collection->put('dislikes_count', $this->dislikesUsers->count());
 
         return $collection->except($this->hiddenForPostCards);
     }

@@ -53,11 +53,3 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 //=================== Getting FOLLOWING
 // list by ID
 Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
-
-
-
-
-
-/* //TO DELETE ROBERTO
-Route::post('/add-comment', [HomeController::class, 'addComment']);
-Route::post('/add-post', [HomeController::class, 'addPost']); */
