@@ -34,9 +34,9 @@
                 <a href="#" class="relative hover:shadow-lg hover:grow">
                     <img class="hover:grow" src="{{$post['gif']}}">
                     <div class="icon-layer hidden transition hover-layer bg-gray-500 bg-opacity-50 absolute h-full w-full top-0 left-0 flex justify-center items-center">
-                        <i class="fas fa-heart text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['likes_count']}}</span>
-                        <i class="far fa-dizzy text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['dislikes_count']}}</span>
-                        <i class="fas fa-comments text-yellow-300 text-3xl"></i><span class="pl-2 text-xl font-semibold">{{$post['comments_count']}}</span>
+                        <i class="interactive-icon fas fa-heart text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['likes_count']}}</span>
+                        <i class="interactive-icon far fa-dizzy text-yellow-300 text-3xl"></i><span class="px-2 text-xl font-semibold">{{$post['dislikes_count']}}</span>
+                        <i class="interactive-icon fas fa-comments text-yellow-300 text-3xl"></i><span class="pl-2 text-xl font-semibold">{{$post['comments_count']}}</span>
                     </div>
                 </a>
             </div>

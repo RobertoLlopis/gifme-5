@@ -6,7 +6,9 @@ import {
     showModal,
     uploadFileToImgur,
     debounceEvent,
-    testImage
+    testImage,
+    isHomeSection,
+    isProfileSection
 } from './utils.js';
 
 export const newGifCnt = $('#last-load-img');
@@ -79,4 +81,61 @@ export function handleNewPostSubmit(e) {
     hideModal();
 }
 
+export function handleInteraction(e) {
+    let icon = e.target;
+    let postId = getPostId(icon);
+    let siblingIcon = getSiblingIcon(icon);
+    //TODO: In case is comment icon.
 
+    // In case Icon clicked was like
+    if (icon.classList.contains('fa-heart')) {
+        if (!isFill(icon)) {
+
+            if (isFill(siblingIcon)) {
+                fetchInteraction('deleteDislike', postId);
+            }
+            fetchInteraction('like', postId);
+        }
+
+        fetchInteraction('deleteLike', postId);
+    }
+
+    // In case Icon clicked was dislike
+    if (!isFill(icon)) {
+
+        if (isFill(siblingIcon)) {
+            fetchInteraction('deleteLike', postId);
+        }
+        fetchInteraction('dislike', postId);
+    }
+
+    fetchInteraction('deleteDislike', postId);
+}
+
+function fetchInteraction(interaction, postId) {
+    let formData = new FormData();
+    formData.append('postId', postId);
+    //TODO: Interaction Url Builder
+    //fetchPost('InteractionUrl', formData);
+}
+
+function isFill(icon) {
+    return icon.classList.contains('fas') ? true : false;
+}
+
+function getSiblingIcon(icon) {
+    if (icon.classList.contains('fa-heart')) {
+        if (isHomeSection()) return icon.closest('.interaction-row').querySelector('fa-dizzy');
+
+        return icon.closest('.icon-layer').querySelector('fa-dizzy');
+    }
+
+    if (isHomeSection()) return icon.closest('.interaction-row').querySelector('fa-heart');
+
+    return icon.closest('.icon-layer').querySelector('fa-heart');
+}
+
+function getPostId(elem) {
+    if (isHomeSection()) return elem.closest('article').id;
+    if (isProfileSection()) return elem.closest('.profile-post').dataset['postId'];
+}

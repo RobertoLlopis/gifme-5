@@ -37,6 +37,7 @@
     }
     &-description {
         font-size: 0.9rem;
+        margin-top: 1rem;
         span {
             font-weight: bold;
         }   
@@ -65,13 +66,21 @@
         @include flex-row;
         width: 100%;
         justify-content: space-between;
+        align-items: flex-start;
         font-size: 1.3rem;
+        div {
+            @include flex-column;
+            width: 33.3333%;
+            i {
+                margin-top: 0.2rem;
+            }
+            
+        }
     }
-    .likes-info, .comments-info{
+    .likes-info, .comments-info, .dislikes-info{
         display: inline-block;
-        min-width: 2.5rem;
+        width: 100%;
         font-size: 0.8rem;
-        margin-right: 0.5rem;
     }
     margin-bottom: 3rem;
 }

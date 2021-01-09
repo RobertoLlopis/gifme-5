@@ -105,6 +105,12 @@ export function testImage(url, callback, timeout) {
     }, timeout);
 }
 
+export function isHomeSection() {
+    return window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '' ? true : false;
+}
+export function isProfileSection() {
+    return window.location.href.includes('profile') ? true : false;
+}
 
 export function createFollowingUser(user) {
     return `<div data-user-id="${user['id']}" class="follow flex items-center mb-2">

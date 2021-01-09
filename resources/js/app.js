@@ -2,8 +2,8 @@
 require('./bootstrap');
 require('alpinejs');
 
-import { $ } from './utils.js';
-import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick } from './listeners';
+import { $, isHomeSection, isProfileSection } from './utils.js';
+import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction } from './listeners';
 import { handleHomeSubmit, handleHomeClick, handleSidebarClick } from './homeListeners';
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
@@ -22,21 +22,27 @@ $('body').addEventListener('drop', dropHandler);
 /*============================
 ======== Home Section 
 =============================*/
-if (window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '') {
+if (isHomeSection()) {
     //Handle any form submit from home section as new comments or likes
     $('.home').addEventListener('submit', handleHomeSubmit);
     $('.home').addEventListener('click', handleHomeClick);
     $('.sidebar').addEventListener('click', handleSidebarClick);
 };
 
+
 /*============================
 ======= Profile Section 
 =============================*/
-if (window.location.href.includes('profile')) {
+if (isProfileSection()) {
     $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
     $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
     $('#profile-follow').addEventListener('click', (e) => handleFollowClick(e, $('#profile-info')));
 };
+
+/*============================
+=== Dis/Like - Comment Icons 
+=============================*/
+$('.interactive-icon').addEventListener('click', handleInteraction);
 
 /*============================
 ======= Modal Component 
