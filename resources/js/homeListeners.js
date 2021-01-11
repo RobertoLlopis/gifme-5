@@ -1,6 +1,7 @@
 import {
     $,
     fetchPost,
+    debounceEvent,
     createFormData,
     createFollowingUser,
     dissapear
@@ -20,8 +21,9 @@ export function handleHomeSubmit(e) {
     }
 }
 export function handleHomeClick(e) {
-    console.log('fired');
-    console.log(e.target.classList);
+    if (e.target.closest('.searchPopup')) {
+        //TODO: Logic of mention (maybe add info in form element)
+    }
     if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
         let userId = e.target.closest('article').id;
         if (userId) window.location.href = `/profile/${userId}`;
@@ -41,3 +43,11 @@ export function handleSidebarClick(e) {
         user.remove();
     }
 }
+export const handleHomeInputChange = debounceEvent(function (e) {
+    const mentionRegEx = /([@#])([a-z\d_]+)/ig;
+    if (mentionRegEx.test(e.target.value)) {
+        //fetch Users
+        manageSearchResultsPopup(e, users);
+    }
+
+}, 500);

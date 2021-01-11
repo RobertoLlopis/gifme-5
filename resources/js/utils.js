@@ -105,6 +105,36 @@ export function testImage(url, callback, timeout) {
     }, timeout);
 }
 
+export function isHomeSection() {
+    return window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '' ? true : false;
+}
+export function isProfileSection() {
+    return window.location.href.includes('profile') ? true : false;
+}
+
+export function manageSearchResultsPopup(e, users) {
+    let url;
+    if (e.target.id != 'search-profile') {
+        e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>')
+        url = '#';
+    }
+    let searchPopup = e.target.parentElement.querySelector('.searchPopup');
+    users.forEach(u => searchPopup.insertAdjacentHTML('beforeend', createSearchResultContainer(u, !url && `/profile/${u.id}`)));
+    fadeIn(searchPopup);
+}
+
+function createSearchResultContainer(user, endpoint) {
+    return `<a href="${endpoint}" class="flex items-center mb-2">
+    <div class="cursor-pointer flex-shrink-0 h-15 w-15">
+        <img class="h-15 w-15 rounded-full border-purple-900 border-2" src="${user['photo_url_path']}" alt="avatar">
+    </div>
+    <div class="ml-4">
+        <div class="cursor-pointer text-lg font-medium text-purple-900">
+            ${user.username}
+        </div>
+    </div>
+</a>`
+}
 
 export function createFollowingUser(user) {
     return `<div data-user-id="${user['id']}" class="follow flex items-center mb-2">
