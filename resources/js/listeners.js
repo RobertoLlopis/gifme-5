@@ -16,7 +16,7 @@ export const newGifCnt = $('#last-load-img');
 const gifUrlInput = $('input[name="custom-gif-url"]');
 
 export function handleFollowClick(e, infoElem) {
-    fetchPost(`/follow/${infoElem.dataset['userId']}`);
+    fetchPost(`/follow/${infoElem.dataset['userId']}`).then(res=>console.log(res));
 }
 
 export function handleModalClick(e) {

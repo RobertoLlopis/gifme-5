@@ -21308,13 +21308,19 @@ var modal = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-backgrou
 });
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('drop', _dragAndDrop__WEBPACK_IMPORTED_MODULE_4__["dropHandler"]);
 /*============================
+======= Search Profile 
+=============================*/
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#search-profile').addEventListener('change', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleProfileSearch"]);
+/*============================
 ======== Home Section 
 =============================*/
 
-if (window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '') {
+if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) {
   //Handle any form submit from home section as new comments or likes
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeClick"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('change', handleHomeInputChange);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.sidebar').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleSidebarClick"]);
 }
 
@@ -21323,7 +21329,7 @@ if (window.location.href.includes('dashboard') || window.location.href.split('/'
 ======= Profile Section 
 =============================*/
 
-if (window.location.href.includes('profile')) {
+if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', function (e) {
@@ -21332,6 +21338,11 @@ if (window.location.href.includes('profile')) {
 }
 
 ;
+/*============================
+=== Dis/Like - Comment Icons 
+=============================*/
+
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.interactive-icon').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleInteraction"]);
 /*============================
 ======= Modal Component 
 =============================*/
@@ -21427,7 +21438,7 @@ function dragEventHandler(e) {
 /*!***************************************!*\
   !*** ./resources/js/homeListeners.js ***!
   \***************************************/
-/*! exports provided: handleHomeSubmit, handleHomeClick, handleSidebarClick */
+/*! exports provided: handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputChange */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21435,6 +21446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeClick", function() { return handleHomeClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleSidebarClick", function() { return handleSidebarClick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeInputChange", function() { return handleHomeInputChange; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
 
@@ -21451,8 +21463,8 @@ function handleHomeSubmit(e) {
   }
 }
 function handleHomeClick(e) {
-  console.log('fired');
-  console.log(e.target.classList);
+  if (e.target.closest('.searchPopup')) {//TODO: Logic of mention (maybe add info in form element)
+  }
 
   if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
     var userId = e.target.closest('article').id;
@@ -21477,6 +21489,14 @@ function handleSidebarClick(e) {
     user.remove();
   }
 }
+var handleHomeInputChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
+  var mentionRegEx = /([@#])([a-z\d_]+)/ig;
+
+  if (mentionRegEx.test(e.target.value)) {
+    //fetch Users
+    manageSearchResultsPopup(e, users);
+  }
+}, 500);
 
 /***/ }),
 
@@ -21484,7 +21504,7 @@ function handleSidebarClick(e) {
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: newGifCnt, handleFollowClick, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit */
+/*! exports provided: newGifCnt, handleFollowClick, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit, handleProfileSearch, handleInteraction */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21497,12 +21517,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeNewPostUrl", function() { return changeNewPostUrl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleCustomUrlChange", function() { return handleCustomUrlChange; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleProfileSearch", function() { return handleProfileSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleInteraction", function() { return handleInteraction; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
 var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
 function handleFollowClick(e, infoElem) {
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(infoElem.dataset['userId']));
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(infoElem.dataset['userId'])).then(function (res) {
+    return console.log(res);
+  });
 }
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
@@ -21575,6 +21599,82 @@ function handleNewPostSubmit(e) {
   });
   hideModal();
 }
+var handleProfileSearch = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
+  //Fetch for users result
+  //fetchProfiles()
+  //then
+  //Create component for users
+  manageSearchResultsPopup(e, users);
+}, 800);
+function handleInteraction(e) {
+  var icon = e.target;
+  var parentElement = getParentElement(icon);
+  var siblingIcon = getSiblingIcon(icon);
+  var postId = getPostId(icon);
+  var formData = new FormData();
+  formData.append('post_id', postId); //TODO: In case is comment icon.
+
+  var status = getPostStatus(icon);
+  formData.append('post_status', status);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('updateLikeStatus', formData).then(function (res) {
+    //If 0 ---> icons empty
+    if (res == 0) {
+      removeFill(icon);
+      removeFill(siblingIcon);
+      return;
+    }
+
+    if (res == 1) {
+      fillIcon(parentElement.querySelector('fa-heart'));
+      removeFill(parentElement.querySelector('fa-dizzy'));
+      return;
+    }
+
+    if (res == 2) {
+      fillIcon(parentElement.querySelector('fa-dizzy'));
+      removeFill(parentElement.querySelector('fa-heart'));
+      return;
+    }
+  });
+}
+
+function fillIcon(icon) {
+  if (icon.classList.contains('fas')) return;
+  icon.classList.remove('far');
+  icon.classList.add('fas');
+}
+
+function removeFill(icon) {
+  if (icon.classList.contains('fas')) {
+    icon.classList.remove('fas');
+    icon.classList.add('far');
+  }
+}
+
+function getSiblingIcon(icon) {
+  if (icon.classList.contains('fa-heart')) {
+    if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return icon.closest('.interaction-row').querySelector('fa-dizzy');
+    return icon.closest('.icon-layer').querySelector('fa-dizzy');
+  }
+
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return icon.closest('.interaction-row').querySelector('fa-heart');
+  return icon.closest('.icon-layer').querySelector('fa-heart');
+}
+
+function getParentElement(elem) {
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('article');
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) return elem.closest('.profile-post');
+}
+
+function getPostId(elem) {
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('article').id;
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) return elem.closest('.profile-post').dataset['postId'];
+}
+
+function getPostStatus(elem) {
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('article').dataset['status'];
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) return elem.closest('.profile-post').dataset['status'];
+}
 
 /***/ }),
 
@@ -21627,7 +21727,7 @@ function resetIconLayers() {
 /*!*******************************!*\
   !*** ./resources/js/utils.js ***!
   \*******************************/
-/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage, createFollowingUser */
+/*! exports provided: $, fetchPost, uploadFileToImgur, createFileFormData, createFormData, dissapear, fadeIn, showModal, debounceEvent, testImage, isHomeSection, isProfileSection, manageSearchResultsPopup, createFollowingUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21642,6 +21742,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return showModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounceEvent", function() { return debounceEvent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testImage", function() { return testImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isHomeSection", function() { return isHomeSection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isProfileSection", function() { return isProfileSection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "manageSearchResultsPopup", function() { return manageSearchResultsPopup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFollowingUser", function() { return createFollowingUser; });
 var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
 var username = document.head.querySelector("[name~=username]").content;
@@ -21757,6 +21860,31 @@ function testImage(url, callback, timeout) {
     callback(url, "");
   }, timeout);
 }
+function isHomeSection() {
+  return window.location.href.includes('dashboard') || window.location.href.split('/').pop() == '' ? true : false;
+}
+function isProfileSection() {
+  return window.location.href.includes('profile') ? true : false;
+}
+function manageSearchResultsPopup(e, users) {
+  var url;
+
+  if (e.target.id != 'search-profile') {
+    e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>');
+    url = '#';
+  }
+
+  var searchPopup = e.target.parentElement.querySelector('.searchPopup');
+  users.forEach(function (u) {
+    return searchPopup.insertAdjacentHTML('beforeend', createSearchResultContainer(u, !url && "/profile/".concat(u.id)));
+  });
+  fadeIn(searchPopup);
+}
+
+function createSearchResultContainer(user, endpoint) {
+  return "<a href=\"".concat(endpoint, "\" class=\"flex items-center mb-2\">\n    <div class=\"cursor-pointer flex-shrink-0 h-15 w-15\">\n        <img class=\"h-15 w-15 rounded-full border-purple-900 border-2\" src=\"").concat(user['photo_url_path'], "\" alt=\"avatar\">\n    </div>\n    <div class=\"ml-4\">\n        <div class=\"cursor-pointer text-lg font-medium text-purple-900\">\n            ").concat(user.username, "\n        </div>\n    </div>\n</a>");
+}
+
 function createFollowingUser(user) {
   return "<div data-user-id=\"".concat(user['id'], "\" class=\"follow flex items-center mb-2\">\n            <div class=\"follow-avatar cursor-pointer flex-shrink-0 h-20 w-20\">\n                <img class=\"h-20 w-20 rounded-full border-purple-900 border-2\" src=\"").concat(user['profile_photo_url'], "\" alt=\"user-avatar\">\n            </div>\n            <div class=\"ml-4\">\n                <div class=\"follow-name cursor-pointer text-lg font-medium text-purple-900\">\n                   ").concat(user['user_name'], "\n                </div>\n                <div class=\"text-md text-gray-500\">\n                    ").concat(user['name'], "\n                </div>\n            </div>\n        </div>");
 }
@@ -21781,8 +21909,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

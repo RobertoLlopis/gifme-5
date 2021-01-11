@@ -17,8 +17,8 @@ class ProfileController extends Controller
         $posts = $this->getPostsCardsInfo($user_id);
         $profileFollowing = $this->profileFollowingStatus($user_id);
 
-        // return view('profile', compact('posts', 'profile','profileFollowing'));
-        return compact('profile', 'posts', 'user_id','profileFollowing');
+        return view('profile', compact('posts', 'profile','profileFollowing'));
+        // return compact('profile', 'posts', 'user_id','profileFollowing');
     }
 
     public function getPostsCardsInfo($user_id)
