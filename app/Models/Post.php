@@ -31,7 +31,7 @@ class Post extends Model
         $collection->put('likes_count', $this->likesUsers->count());
         $collection->put('dislikes_count', $this->dislikesUsers->count());
         $collection->put('like_status', $this->likeStatus());
-        
+
         return $collection;
     }
 
@@ -80,9 +80,9 @@ class Post extends Model
 
     public function likeStatus()
     {
-        $status = $this->hasOne(LikeDislikePost::class)->where('user_id', 10)->select('status')->first();
-        
-        if(!$status){
+        $status = $this->hasOne(LikeDislikePost::class)->where('user_id', Auth::user()->id)->select('status')->first();
+
+        if (!$status) {
             return 0;
         }
         return $status['status'];

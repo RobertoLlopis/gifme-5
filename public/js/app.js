@@ -21320,7 +21320,7 @@ if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) {
   //Handle any form submit from home section as new comments or likes
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeClick"]);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('change', handleHomeInputChange);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('change', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeInputChange"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.sidebar').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleSidebarClick"]);
 }
 
@@ -21463,6 +21463,10 @@ function handleHomeSubmit(e) {
   }
 }
 function handleHomeClick(e) {
+  if (e.target.classList.contains('interactive-icon')) {
+    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleInteraction"])(e);
+  }
+
   if (e.target.closest('.searchPopup')) {//TODO: Logic of mention (maybe add info in form element)
   }
 
@@ -21608,12 +21612,12 @@ var handleProfileSearch = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounc
 }, 800);
 function handleInteraction(e) {
   var icon = e.target;
-  var parentElement = getParentElement(icon);
-  var siblingIcon = getSiblingIcon(icon);
   var postId = getPostId(icon);
   var formData = new FormData();
   formData.append('post_id', postId); //TODO: In case is comment icon.
 
+  var parentElement = getParentElement(icon);
+  var siblingIcon = getSiblingIcon(icon, parentElement);
   var status = getPostStatus(icon);
   formData.append('post_status', status);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('updateLikeStatus', formData).then(function (res) {
@@ -21625,14 +21629,14 @@ function handleInteraction(e) {
     }
 
     if (res == 1) {
-      fillIcon(parentElement.querySelector('fa-heart'));
-      removeFill(parentElement.querySelector('fa-dizzy'));
+      fillIcon(parentElement.querySelector('.fa-heart'));
+      removeFill(parentElement.querySelector('.fa-dizzy'));
       return;
     }
 
     if (res == 2) {
-      fillIcon(parentElement.querySelector('fa-dizzy'));
-      removeFill(parentElement.querySelector('fa-heart'));
+      fillIcon(parentElement.querySelector('.fa-dizzy'));
+      removeFill(parentElement.querySelector('.fa-heart'));
       return;
     }
   });
@@ -21651,18 +21655,16 @@ function removeFill(icon) {
   }
 }
 
-function getSiblingIcon(icon) {
-  if (icon.classList.contains('fa-heart')) {
-    if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return icon.closest('.interaction-row').querySelector('fa-dizzy');
-    return icon.closest('.icon-layer').querySelector('fa-dizzy');
+function getSiblingIcon(icon, parentElement) {
+  if (icon.classList.contains('.fa-heart')) {
+    return parentElement.querySelector('.fa-dizzy');
   }
 
-  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return icon.closest('.interaction-row').querySelector('fa-heart');
-  return icon.closest('.icon-layer').querySelector('fa-heart');
+  return parentElement.querySelector('.fa-heart');
 }
 
 function getParentElement(elem) {
-  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('article');
+  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('.interaction-row');
   if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) return elem.closest('.profile-post');
 }
 
@@ -21672,8 +21674,8 @@ function getPostId(elem) {
 }
 
 function getPostStatus(elem) {
-  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) return elem.closest('article').dataset['status'];
-  if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) return elem.closest('.profile-post').dataset['status'];
+  if (elem.classList.contains('fa-heart')) return 1;
+  return 2;
 }
 
 /***/ }),
@@ -21909,8 +21911,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

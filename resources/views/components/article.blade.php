@@ -9,7 +9,7 @@
     <div class="article-interactive">
         <div class="interaction-row">
             <div class="likes mr-10 text-center">
-                <i class="interactive-icon far fa-heart inline-block w-full"></i>
+                <i class="interactive-icon {{$post['like_status'] == 1 ? 'fas' : 'far'}} fa-heart inline-block w-full"></i>
                 <span class="likes-info">
                     @if($post['likes_count'] > 0)
                     {{$post['likes_count']}} Likes
@@ -25,7 +25,7 @@
                 </span>
             </div>
             <div class="dislikes mr-10 text-center">
-                <i class="interactive-icon far fa-dizzy inline-block w-full"></i>
+                <i class="interactive-icon {{$post['like_status'] == 2 ? 'fas' : 'far'}} fa-dizzy inline-block w-full"></i>
                 <span class="dislikes-info">
                     @if($post['dislikes_count'] > 0)
                     {{$post['dislikes_count']}} Dislikes
