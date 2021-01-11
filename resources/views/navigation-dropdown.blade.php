@@ -21,7 +21,7 @@
             <div class="flex justify-between items-center w-1/2">
                 <div class="relative">
                     <x-jet-input type="text" name="search-profile" id="search-profile" placeholder="Search a user..." class=" w-80 p-0 h-12 px-3" />
-                    <div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>
+                    <div class="searchPopup hidden absolute w-full flex flex-col h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>
                 </div>
                 <x-jet-nav-link id="add-post" href="#">
                     <i class="far fa-plus-square text-4xl"></i>

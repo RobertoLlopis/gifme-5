@@ -9,15 +9,12 @@ import {
     testImage,
     isHomeSection,
     isProfileSection,
+    manageSearchResultsPopup,
     fadeIn
 } from './utils.js';
 
 export const newGifCnt = $('#last-load-img');
 const gifUrlInput = $('input[name="custom-gif-url"]');
-
-export function handleFollowClick(e, infoElem) {
-    fetchPost(`/follow/${infoElem.dataset['userId']}`).then(res=>console.log(res));
-}
 
 export function handleModalClick(e) {
     if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
@@ -86,11 +83,10 @@ export const handleProfileSearch = debounceEvent(function (e) {
     //Fetch for users result
     let formData = new FormData();
     formData.append('search', e.target.value);
-    fetchPost('/search', formData).then(res=>console.log(JSON.parse(res)));
-    //fetchProfiles()
-    //then
-    //Create component for users
-    // manageSearchResultsPopup(e, users);
+    fetchPost('/search', formData).then(data =>
+        manageSearchResultsPopup(e, JSON.parse(data))
+    );
+
 }, 800);
 
 export function handleInteraction(e) {

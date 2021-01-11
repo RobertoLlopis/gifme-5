@@ -42,7 +42,7 @@ export function handleSidebarClick(e) {
         let user = e.target.closest('.follow');
         fetch(`/user/${user.dataset['userId']}`).then(res => res.json())
             .then(users => $('#following-container').insertAdjacentHTML('beforeend', createFollowingUser(users[0])));
-        handleFollowClick(e, user);
+        fetchPost(`/follow/${user.dataset['userId']}`);
         dissapear(user);
         user.remove();
     }

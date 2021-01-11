@@ -15,11 +15,18 @@ class ProfileController extends Controller
     {
         $profile = $this->getProfileUserInfo($user_id);
         $posts = $this->getPostsCardsInfo($user_id);
-        $profileFollowing = $this->profileFollowingStatus($user_id);
+        $following_status = $this->profileFollowingStatus($user_id);
 
-        return view('profile', compact('posts', 'profile','profileFollowing'));
-        // return compact('profile', 'posts', 'user_id','profileFollowing');
+        return view('profile', compact('posts', 'profile', 'following_status'));
+        // return compact('profile', 'posts', 'user_id', 'following_status');
     }
+    public function byUserName($user_name)
+    {
+        $user_id = User::where('user_name', $user_name)->get()->first()['id'];
+        return redirect()->route('profile', ['user_id' => $user_id]);
+        /*  return $this->index(strval(User::where('user_name', $user_name)->get()->first()['id'])); */
+    }
+
 
     public function getPostsCardsInfo($user_id)
     {
@@ -46,10 +53,10 @@ class ProfileController extends Controller
 
     public function profileFollowingStatus($user_id)
     {
-        $followingStatus = FollowingUser::select()->where('user_following_id',$user_id)
-                                                ->where('user_id',Auth::user()->id);
+        $followingStatus = FollowingUser::select()->where('user_following_id', $user_id)
+            ->where('user_id', Auth::user()->id);
 
-        if ($followingStatus->count() > 0){
+        if ($followingStatus->count() > 0) {
             return 1;
         }
         return 0;

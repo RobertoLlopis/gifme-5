@@ -5,10 +5,10 @@ require('alpinejs');
 import { $, isHomeSection, isProfileSection } from './utils.js';
 import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction, handleProfileSearch } from './listeners';
 import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputChange } from './homeListeners';
-import { showIconLayer, hideIconLayer } from "./profileListeners";
+import { showIconLayer, hideIconLayer, handleProfileFollow } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 
-const modal = $('#modal-background-layer');  
+const modal = $('#modal-background-layer');
 
 /*============================
 =========== Body 
@@ -42,7 +42,7 @@ if (isHomeSection()) {
 if (isProfileSection()) {
     $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
     $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
-    $('#profile-follow').addEventListener('click', (e) => handleFollowClick(e, $('#profile-info')));
+    $('#profile-follow').addEventListener('click', handleProfileFollow);
 };
 
 /*============================

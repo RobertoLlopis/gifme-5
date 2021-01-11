@@ -119,18 +119,22 @@ export function manageSearchResultsPopup(e, users) {
         url = '#';
     }
     let searchPopup = e.target.parentElement.querySelector('.searchPopup');
+    searchPopup.innerHTML = '';
     users.forEach(u => searchPopup.insertAdjacentHTML('beforeend', createSearchResultContainer(u, !url && `/profile/${u.id}`)));
     fadeIn(searchPopup);
 }
 
+'@jkdsfgddjhdjk dfgdsjgsd'
+'<span >kjdfdfhkdfh</span> dfdfd '
+
 function createSearchResultContainer(user, endpoint) {
     return `<a href="${endpoint}" class="flex items-center mb-2">
     <div class="cursor-pointer flex-shrink-0 h-15 w-15">
-        <img class="h-15 w-15 rounded-full border-purple-900 border-2" src="${user['photo_url_path']}" alt="avatar">
+        <img class="h-15 w-15 rounded-full border-purple-900 border-2" src="${user['profile_photo_url']}" alt="avatar">
     </div>
     <div class="ml-4">
         <div class="cursor-pointer text-lg font-medium text-purple-900">
-            ${user.username}
+            ${user['user_name']}
         </div>
     </div>
 </a>`

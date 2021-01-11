@@ -21332,9 +21332,7 @@ if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) {
 if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', function (e) {
-    return Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-info'));
-  });
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["handleProfileFollow"]);
 }
 
 ;
@@ -21488,7 +21486,7 @@ function handleSidebarClick(e) {
     }).then(function (users) {
       return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#following-container').insertAdjacentHTML('beforeend', Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFollowingUser"])(users[0]));
     });
-    Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleFollowClick"])(e, user);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(user.dataset['userId']));
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(user);
     user.remove();
   }
@@ -21508,13 +21506,12 @@ var handleHomeInputChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debou
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: newGifCnt, handleFollowClick, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit, handleProfileSearch, handleInteraction */
+/*! exports provided: newGifCnt, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit, handleProfileSearch, handleInteraction */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newGifCnt", function() { return newGifCnt; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleFollowClick", function() { return handleFollowClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalClick", function() { return handleModalClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleModalDisplay", function() { return handleModalDisplay; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostFileChange", function() { return handleNewPostFileChange; });
@@ -21527,11 +21524,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
 var gifUrlInput = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name="custom-gif-url"]');
-function handleFollowClick(e, infoElem) {
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(infoElem.dataset['userId'])).then(function (res) {
-    return console.log(res);
-  });
-}
 function handleModalClick(e) {
   if (e.target.id == 'modal-background-layer' || e.target.id == 'cancel-new-post') {
     hideModal();
@@ -21607,12 +21599,9 @@ var handleProfileSearch = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounc
   //Fetch for users result
   var formData = new FormData();
   formData.append('search', e.target.value);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/search', formData).then(function (res) {
-    return console.log(JSON.parse(res));
-  }); //fetchProfiles()
-  //then
-  //Create component for users
-  // manageSearchResultsPopup(e, users);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/search', formData).then(function (data) {
+    return Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["manageSearchResultsPopup"])(e, JSON.parse(data));
+  });
 }, 800);
 function handleInteraction(e) {
   var icon = e.target;
@@ -21688,13 +21677,40 @@ function getPostStatus(elem) {
 /*!******************************************!*\
   !*** ./resources/js/profileListeners.js ***!
   \******************************************/
-/*! exports provided: showIconLayer, hideIconLayer */
+/*! exports provided: handleProfileFollow, showIconLayer, hideIconLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleProfileFollow", function() { return handleProfileFollow; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showIconLayer", function() { return showIconLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideIconLayer", function() { return hideIconLayer; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./resources/js/utils.js");
+
+function handleProfileFollow(e) {
+  Object(_utils__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])("/follow/".concat(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-info').dataset['userId'])).then(function (res) {
+    return res == 0 ? convertToFollowBtn() : convertToUnfollowBtn();
+  });
+}
+
+function convertToFollowBtn() {
+  var btn = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow');
+  if (btn.classList.contains('bg-yellow-300')) return;
+  btn.classList.remove('bg-purple-900', 'hover:bg-yellow-300');
+  btn.classList.add('bg-yellow-300', 'hover:bg-purple-900');
+  btn.textContent = 'Follow';
+  btn.insertAdjacentHTML('afterbegin', '<i class="fas fa-plus  mr-3"/>');
+}
+
+function convertToUnfollowBtn() {
+  var btn = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow');
+  if (btn.classList.contains('bg-purple-300')) return;
+  btn.classList.remove('bg-yellow-300', 'hover:bg-purple-900');
+  btn.classList.add('bg-purple-900', 'hover:bg-yellow-300');
+  btn.textContent = 'Following';
+  btn.insertAdjacentHTML('afterbegin', '<i class="fas fa-minus mr-3" />');
+}
+
 function showIconLayer(e) {
   e.stopPropagation();
 
@@ -21881,6 +21897,7 @@ function manageSearchResultsPopup(e, users) {
   }
 
   var searchPopup = e.target.parentElement.querySelector('.searchPopup');
+  searchPopup.innerHTML = '';
   users.forEach(function (u) {
     return searchPopup.insertAdjacentHTML('beforeend', createSearchResultContainer(u, !url && "/profile/".concat(u.id)));
   });
@@ -21888,7 +21905,7 @@ function manageSearchResultsPopup(e, users) {
 }
 
 function createSearchResultContainer(user, endpoint) {
-  return "<a href=\"".concat(endpoint, "\" class=\"flex items-center mb-2\">\n    <div class=\"cursor-pointer flex-shrink-0 h-15 w-15\">\n        <img class=\"h-15 w-15 rounded-full border-purple-900 border-2\" src=\"").concat(user['photo_url_path'], "\" alt=\"avatar\">\n    </div>\n    <div class=\"ml-4\">\n        <div class=\"cursor-pointer text-lg font-medium text-purple-900\">\n            ").concat(user.username, "\n        </div>\n    </div>\n</a>");
+  return "<a href=\"".concat(endpoint, "\" class=\"flex items-center mb-2\">\n    <div class=\"cursor-pointer flex-shrink-0 h-15 w-15\">\n        <img class=\"h-15 w-15 rounded-full border-purple-900 border-2\" src=\"").concat(user['profile_photo_url'], "\" alt=\"avatar\">\n    </div>\n    <div class=\"ml-4\">\n        <div class=\"cursor-pointer text-lg font-medium text-purple-900\">\n            ").concat(user['user_name'], "\n        </div>\n    </div>\n</a>");
 }
 
 function createFollowingUser(user) {
@@ -21915,8 +21932,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

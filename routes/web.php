@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Route;
 //Display
 Route::middleware(['auth:sanctum', 'verified'])->get('/', [HomeController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{user_id}', [ProfileController::class, 'index']);
-
+Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{user_id}', [ProfileController::class, 'index'])->name('profile');
+Route::middleware(['auth:sanctum', 'verified'])->get('/profile/username/{user_name}', [ProfileController::class, 'byUserName']);
 // Creating elements
 Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment");
@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [Like
 Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_id}', [FollowingUserController::class, 'followingFilter']);
 
 // Search engine
-Route::middleware(['auth:sanctum', 'verified'])->post('/search', [UserController::class, 'getUsers']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/search', [UserController::class, 'getUsersByUsername']);
 
 
 /*============================
@@ -60,4 +60,3 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 //=================== Getting FOLLOWING
 // list by ID
 Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
-
