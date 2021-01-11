@@ -46,9 +46,12 @@ class ProfileController extends Controller
 
     public function profileFollowingStatus($user_id)
     {
-        return FollowingUser::select()->where('post_id',$user_id)
-                                ->where('user_id',Auth::user()->id);
+        $followingStatus = FollowingUser::select()->where('user_following_id',$user_id)
+                                                ->where('user_id',Auth::user()->id);
 
-        // return 0;
+        if ($followingStatus->count() > 0){
+            return 1;
+        }
+        return 0;
     }
 }

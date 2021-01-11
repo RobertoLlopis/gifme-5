@@ -34,6 +34,9 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_i
 // LikeDislike CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [LikeDislikePostController::class, 'likeDislikeFilter']);
 
+// Following CRUD
+Route::middleware(['auth:sanctum', 'verified'])->post('/updateFollowing', [FollowingUserController::class, 'followingFilter']);
+
 
 /*============================
 ======= Retrieve Info
