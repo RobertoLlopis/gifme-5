@@ -84,10 +84,13 @@ export function handleNewPostSubmit(e) {
 
 export const handleProfileSearch = debounceEvent(function (e) {
     //Fetch for users result
+    let formData = new FormData();
+    formData.append('search', e.target.value);
+    fetchPost('/search', formData).then(res=>console.log(JSON.parse(res)));
     //fetchProfiles()
     //then
     //Create component for users
-    manageSearchResultsPopup(e, users);
+    // manageSearchResultsPopup(e, users);
 }, 800);
 
 export function handleInteraction(e) {
@@ -102,7 +105,7 @@ export function handleInteraction(e) {
     let siblingIcon = getSiblingIcon(icon, parentElement);
     let status = getPostStatus(icon);
     formData.append('post_status', status);
-    fetchPost('updateLikeStatus', formData).then(res => {
+    fetchPost('/updateLikeStatus', formData).then(res => {
         //If 0 ---> icons empty
         if (res == 0) {
             removeFill(icon);

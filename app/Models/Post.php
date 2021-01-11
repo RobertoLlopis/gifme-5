@@ -44,6 +44,7 @@ class Post extends Model
         $collection->put('comments_count', $this->comments->count());
         $collection->put('likes_count', $this->likesUsers->count());
         $collection->put('dislikes_count', $this->dislikesUsers->count());
+        $collection->put('like_status', $this->likeStatus());
 
         return $collection->except($this->hiddenForPostCards);
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\LikeDislikePostController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikePostController;
+use App\Http\Controllers\UserController;
 use App\Models\LikeDislikePost;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +57,5 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 //=================== Getting FOLLOWING
 // list by ID
 Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/search', [UserController::class, 'getUsers']);

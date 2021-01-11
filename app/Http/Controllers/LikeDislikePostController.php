@@ -15,8 +15,6 @@ class LikeDislikePostController extends Controller
                                     ->where('user_id',Auth::user()->id);
                         
         if($rowExists->count() > 0){
-            // return $rowExists->select('status');
-            // return 'exists';
             if($rowExists->first()['status'] == $request['post_status']){
                 $this->deleteLikeDislike($request['post_id']);
                 return 0;
@@ -26,7 +24,6 @@ class LikeDislikePostController extends Controller
             }
         } else{
             $this->createLikeDislike($request['post_id'],$request['post_status']);
-            // return 'doesnt exists';
             return $request['post_status'];
         }        
 
@@ -38,11 +35,12 @@ class LikeDislikePostController extends Controller
         $article->user_id = Auth::user()->id;
         $article->status = $post_status;
         $article->save();
-        return back();
     }
 
     public function deleteLikeDislike($post_id) {
-        LikeDislikePost::where('post_id',$post_id)->delete();
+        LikeDislikePost::where('post_id',$post_id)
+                        ->where('user_id',Auth::user()->id)
+                        ->delete();
     }
 
     public function updateLikeDislikeStatus($post_id,$post_status){

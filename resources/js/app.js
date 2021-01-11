@@ -8,7 +8,7 @@ import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputC
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 
-const modal = $('#modal-background-layer');
+const modal = $('#modal-background-layer');  
 
 /*============================
 =========== Body 

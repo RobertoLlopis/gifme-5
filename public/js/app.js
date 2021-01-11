@@ -21605,10 +21605,14 @@ function handleNewPostSubmit(e) {
 }
 var handleProfileSearch = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
   //Fetch for users result
-  //fetchProfiles()
+  var formData = new FormData();
+  formData.append('search', e.target.value);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/search', formData).then(function (res) {
+    return console.log(JSON.parse(res));
+  }); //fetchProfiles()
   //then
   //Create component for users
-  manageSearchResultsPopup(e, users);
+  // manageSearchResultsPopup(e, users);
 }, 800);
 function handleInteraction(e) {
   var icon = e.target;
@@ -21620,7 +21624,7 @@ function handleInteraction(e) {
   var siblingIcon = getSiblingIcon(icon, parentElement);
   var status = getPostStatus(icon);
   formData.append('post_status', status);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('updateLikeStatus', formData).then(function (res) {
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/updateLikeStatus', formData).then(function (res) {
     //If 0 ---> icons empty
     if (res == 0) {
       removeFill(icon);
@@ -21911,8 +21915,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
 
 
 /***/ })
