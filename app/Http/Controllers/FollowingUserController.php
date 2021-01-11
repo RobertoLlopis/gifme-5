@@ -9,17 +9,17 @@ use Illuminate\Support\Facades\Auth;
 class FollowingUserController extends Controller
 {
     
-    public function followingFilter(Request $request){
+    public function followingFilter($user_following_id){
         $followingStatus = FollowingUser::select()
-                                            ->where('user_following_id',$request['user_following_id'])
+                                            ->where('user_following_id',$user_following_id)
                                             ->where('user_id',Auth::user()->id);
 
         if($followingStatus->count() > 0){
-            $this->deleteFollowing($request['user_following_id']);
+            $this->deleteFollowing($user_following_id);
             return 0;
 
         } else{
-            $this->createFollowing($request['user_following_id']);
+            $this->createFollowing($user_following_id);
             return 1;
         }      
 
@@ -35,8 +35,8 @@ class FollowingUserController extends Controller
         return back();
     }
 
-    public function deleteFollowing($post_id) {
-        FollowingUser::where('user_following_id',$post_id)
+    public function deleteFollowing($user_following_id) {
+        FollowingUser::where('user_following_id',$user_following_id)
                         ->where('user_id',Auth::user()->id)
                         ->delete();
     }
