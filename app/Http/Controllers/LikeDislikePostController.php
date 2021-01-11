@@ -10,8 +10,9 @@ class LikeDislikePostController extends Controller
 {
     //
     public function likeDislikeFilter(Request $request){
-        $rowExists = LikeDislikePost::select()->where('post_id',$request['post_id'])
-                        ->where('user_id',Auth::user()->id);
+        $rowExists = LikeDislikePost::select()
+                                    ->where('post_id',$request['post_id'])
+                                    ->where('user_id',Auth::user()->id);
                         
         if($rowExists->count() > 0){
             // return $rowExists->select('status');
