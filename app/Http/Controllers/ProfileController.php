@@ -6,6 +6,7 @@ use App\Models\FollowingUser;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -14,9 +15,10 @@ class ProfileController extends Controller
     {
         $profile = $this->getProfileUserInfo($user_id);
         $posts = $this->getPostsCardsInfo($user_id);
+        $profileFollowing = $this->profileFollowingStatus($user_id);
 
-        return view('profile', compact('posts', 'profile'));
-        //return compact('profile', 'posts', 'user_id');
+        // return view('profile', compact('posts', 'profile','profileFollowing'));
+        return compact('profile', 'posts', 'user_id','profileFollowing');
     }
 
     public function getPostsCardsInfo($user_id)
@@ -40,5 +42,13 @@ class ProfileController extends Controller
         $following = FollowingUser::getFollowingCount($profile_info);
 
         return compact('profile_info', 'gifs_count', 'followers', 'following');
+    }
+
+    public function profileFollowingStatus($user_id)
+    {
+        return FollowingUser::select()->where('post_id',$user_id)
+                                ->where('user_id',Auth::user()->id);
+
+        // return 0;
     }
 }

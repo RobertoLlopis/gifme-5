@@ -23,7 +23,6 @@ class Post extends Model
         $this->user;
         $this->likesUsers;
         $this->dislikesUsers;
-        $this->likeStatus;
 
         $collection = collect($this);
 
@@ -31,8 +30,9 @@ class Post extends Model
         $collection->put('comments_count', $this->comments->count());
         $collection->put('likes_count', $this->likesUsers->count());
         $collection->put('dislikes_count', $this->dislikesUsers->count());
-
-        return $collection->except($this->hiddenForPost);
+        $collection->put('like_status', $this->likeStatus());
+        
+        return $collection;
     }
 
     public function getPostsProfileInfo()
@@ -80,7 +80,12 @@ class Post extends Model
 
     public function likeStatus()
     {
-        return $this->hasOne(LikeDislikePost::class)->where('user_id', 9)->select('status');
+        $status = $this->hasOne(LikeDislikePost::class)->where('user_id', 10)->select('status')->first();
+        
+        if(!$status){
+            return 0;
+        }
+        return $status['status'];
     }
 
     public static function getGifsCount($user)
