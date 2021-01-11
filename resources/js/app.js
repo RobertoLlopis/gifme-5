@@ -4,7 +4,7 @@ require('alpinejs');
 
 import { $, isHomeSection, isProfileSection } from './utils.js';
 import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction, handleProfileSearch } from './listeners';
-import { handleHomeSubmit, handleHomeClick, handleSidebarClick } from './homeListeners';
+import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputChange } from './homeListeners';
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 

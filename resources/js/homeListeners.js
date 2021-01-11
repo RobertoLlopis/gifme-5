@@ -6,7 +6,7 @@ import {
     createFollowingUser,
     dissapear
 } from './utils.js';
-import { handleFollowClick } from './listeners';
+import { handleFollowClick, handleInteraction } from './listeners';
 
 
 export function handleHomeSubmit(e) {
@@ -21,6 +21,9 @@ export function handleHomeSubmit(e) {
     }
 }
 export function handleHomeClick(e) {
+    if (e.target.classList.contains('interactive-icon')) {
+        handleInteraction(e);
+    }
     if (e.target.closest('.searchPopup')) {
         //TODO: Logic of mention (maybe add info in form element)
     }
@@ -29,6 +32,7 @@ export function handleHomeClick(e) {
         if (userId) window.location.href = `/profile/${userId}`;
     }
 }
+
 export function handleSidebarClick(e) {
     if (e.target.closest('.follow-avatar') || e.target.closest('.follow-name')) {
         let userId = e.target.closest('.follow').dataset['userId'];
