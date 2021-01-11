@@ -10,7 +10,7 @@ class UserController extends Controller
     public function getUsers(Request $request)
     {
         // return User::all()->select('id','user_name');
-        // return User::all();
-        return json_encode($request['search']);
+        return json_encode(User::where('user_name','LIKE',$request['search'].'%')->get());
+        // return $request['search'];
     }
 }

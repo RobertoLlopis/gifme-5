@@ -37,6 +37,9 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [Like
 // Following CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_id}', [FollowingUserController::class, 'followingFilter']);
 
+// Search engine
+Route::middleware(['auth:sanctum', 'verified'])->post('/search', [UserController::class, 'getUsers']);
+
 
 /*============================
 ======= Retrieve Info
@@ -58,4 +61,3 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 // list by ID
 Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/search', [UserController::class, 'getUsers']);
