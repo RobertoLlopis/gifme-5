@@ -2,7 +2,7 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20">
-            <div class="flex justify-between w-full">
+            <div class="flex justify-between w-2/5">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -15,15 +15,22 @@
                     <x-jet-nav-link href="/" :active="request()->routeIs('')">
                         Home
                     </x-jet-nav-link>
-                    <x-jet-nav-link id="add-post" href="#">
-                        <i class="far fa-plus-square text-4xl"></i>
-                    </x-jet-nav-link>
                 </div>
             </div>
 
+            <div class="flex justify-between items-center w-1/2">
+                <div class="relative">
+                    <x-jet-input type="text" name="search-profile" id="search-profile" placeholder="Search a user..." class=" w-80 p-0 h-12 px-3" />
+                    <div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>
+                </div>
+                <x-jet-nav-link id="add-post" href="#">
+                    <i class="far fa-plus-square text-4xl"></i>
+                </x-jet-nav-link>
+            </div>
+
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-                
+            <div class="hidden sm:flex sm:items-center sm:ml-6 w-1/5">
+
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())

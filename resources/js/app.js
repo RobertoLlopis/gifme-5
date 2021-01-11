@@ -3,7 +3,7 @@ require('./bootstrap');
 require('alpinejs');
 
 import { $, isHomeSection, isProfileSection } from './utils.js';
-import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction } from './listeners';
+import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction, handleProfileSearch } from './listeners';
 import { handleHomeSubmit, handleHomeClick, handleSidebarClick } from './homeListeners';
 import { showIconLayer, hideIconLayer } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
@@ -20,12 +20,18 @@ const modal = $('#modal-background-layer');
 $('body').addEventListener('drop', dropHandler);
 
 /*============================
+======= Search Profile 
+=============================*/
+$('#search-profile').addEventListener('change', handleProfileSearch);
+
+/*============================
 ======== Home Section 
 =============================*/
 if (isHomeSection()) {
     //Handle any form submit from home section as new comments or likes
     $('.home').addEventListener('submit', handleHomeSubmit);
     $('.home').addEventListener('click', handleHomeClick);
+    $('.home').addEventListener('change', handleHomeInputChange);
     $('.sidebar').addEventListener('click', handleSidebarClick);
 };
 

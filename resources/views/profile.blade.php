@@ -30,7 +30,7 @@
 
         <div id="profile-posts-container" class="w-full h-full bg-gray-50 flex items-center flex-wrap">
             @foreach($posts as $post)
-            <div data-post-id="{{$post['id']}}" class="profile-post w-full md:w-1/3 xl:w-1/4 p-3 flex flex-col">
+            <div data-post-id="{{$post['id']}}" data-status="{{$post['like_status']}}" class="profile-post w-full md:w-1/3 xl:w-1/4 p-3 flex flex-col">
                 <a href="#" class="relative hover:shadow-lg hover:grow">
                     <img class="hover:grow" src="{{$post['gif']}}">
                     <div class="icon-layer hidden transition hover-layer bg-gray-500 bg-opacity-50 absolute h-full w-full top-0 left-0 flex justify-center items-center">
