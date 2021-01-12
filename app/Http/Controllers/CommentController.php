@@ -22,12 +22,16 @@ class CommentController extends Controller
         $article->user_id = $request->user()->id;
         $article->save();
 
-        return $request->comment;
+        return [
+            'postId' => $request->postId,
+            'description'=> $request->comment,
+            'user_name'=> $request->user()['user_name']
+            ];
     }
 
-    function getCommentById($post_id){
+    function getCommentsById($post_id){
 
         $comments = new Comment();
-        return $comments->getComment($post_id);
+        return $comments->getComments($post_id);
     }
 }

@@ -27,7 +27,7 @@ class Post extends Model
         $collection = collect($this);
 
         // counting items into collection
-        $collection->put('comments_count', $this->comments->count());
+        $collection->put('comments_count', $this->commentsCount());
         $collection->put('likes_count', $this->likesUsers->count());
         $collection->put('dislikes_count', $this->dislikesUsers->count());
         $collection->put('like_status', $this->likeStatus());
@@ -41,7 +41,7 @@ class Post extends Model
         $collection = collect($this);
 
         // counting items into collection
-        $collection->put('comments_count', $this->comments->count());
+        $collection->put('comments_count', $this->commentsCount());
         $collection->put('likes_count', $this->likesUsers->count());
         $collection->put('dislikes_count', $this->dislikesUsers->count());
         $collection->put('like_status', $this->likeStatus());
@@ -85,7 +85,13 @@ class Post extends Model
         return $this->hasMany(Comment::class)
             ->join('users', 'users.id', '=', 'comments.user_id')
             ->select('users.name as name', 'users.user_name as username', 'comments.description', 'comments.id')
-            ->take(5);
+            ->take(2);
+    }
+    public function commentsCount(){
+        return $this->hasMany(Comment::class)
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->select('users.name as name', 'users.user_name as username', 'comments.description', 'comments.id')
+            ->count();
     }
 
     public function user()

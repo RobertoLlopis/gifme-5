@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/profile/username/{user_na
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment");
 
 //Comments
-Route::get('/comments/{id}', [CommentController::class, 'getCommentById']);
+Route::get('/comments/{id}', [CommentController::class, 'getCommentsById']);
 
 // Posts CRUD 
 Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");

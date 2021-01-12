@@ -12,7 +12,7 @@ const finalFormatRegEx = /([_#])([a-z.\d_]+)/ig;
 
 export function handleHomeSubmit(e) {
     e.preventDefault();
- 
+
     if (e.target.classList.contains('article-add-comment')) {
         let commentInputValue = e.target.querySelector('input').value;
         let finalComment = '';
@@ -25,22 +25,39 @@ export function handleHomeSubmit(e) {
                     : finalComment = finalComment.replace(_user, `<a href="/profile/username/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`);
             })
             : finalComment = commentInputValue;
- 
+
         let postId = e.target.closest('article').id;
         let formData = new FormData();
         formData.append('postId', postId);
         formData.append('comment', finalComment);
- 
+
         fetchPost('/comment', formData)
-            .then(text => console.log(text));
+            .then(comment => {
+                commentInputValue = '';
+                console.log(comment);
+                insertComment(e.target.closest('article'), JSON.parse(comment));
+            });
     }
+}
+function insertComment(parentElement, comment) {
+
+    let commentHTML =
+        `<div class="comment">
+            <span class="comment-user-name">${comment['user_name']}&nbsp;</span>
+            ${comment.description}
+        </div>`;
+    parentElement.querySelector('.article-comments-cnt').insertAdjacentHTML('beforeend', commentHTML);
 }
 export function handleHomeClick(e) {
     if (e.target.classList.contains('interactive-icon')) {
         handleInteraction(e);
+        return;
     }
-    if (e.target.closest('.searchPopup')) {
-        //TODO: Logic of mention (maybe add info in form element)
+    if (e.target.closest('.more-comments')) {
+        const post = e.target.closest('article');
+        post.querySelector('.article-comments-cnt').innerHTML = '';
+        fetch(`/comments/${post.id}`).then(res => res.json())
+            .then(comments => comments.forEach(comment => insertComment(post, comment)));
     }
     if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
         let userId = e.target.closest('article').dataset['userId'];
