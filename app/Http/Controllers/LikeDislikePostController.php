@@ -10,21 +10,24 @@ class LikeDislikePostController extends Controller
 {
     //
     public function likeDislikeFilter(Request $request){
+        $post_id = $request['post_id'];
+        $post_status = $request['post_status'];
+
         $rowExists = LikeDislikePost::select()
-                                    ->where('post_id',$request['post_id'])
+                                    ->where('post_id',$post_id)
                                     ->where('user_id',Auth::user()->id);
                         
         if($rowExists->count() > 0){
-            if($rowExists->first()['status'] == $request['post_status']){
-                $this->deleteLikeDislike($request['post_id']);
-                return 0;
+            if($rowExists->first()['status'] == $post_status){
+                $this->deleteLikeDislike($post_id);
+                return LikeDislikePost::getPostLikesDislikes($post_id);
             }else{
-                $this->updateLikeDislikeStatus($request['post_id'],$request['post_status']);
-                return $request['post_status'];
+                $this->updateLikeDislikeStatus($post_id,$post_status);
+                return LikeDislikePost::getPostLikesDislikes($post_id);
             }
         } else{
-            $this->createLikeDislike($request['post_id'],$request['post_status']);
-            return $request['post_status'];
+            $this->createLikeDislike($post_id,$post_status);
+            return LikeDislikePost::getPostLikesDislikes($post_id);
         }        
 
     }
@@ -48,6 +51,9 @@ class LikeDislikePostController extends Controller
                         ->where('user_id',Auth::user()->id)
                         ->update(['status'=>$post_status]);
     }
+    
+
+    
 
 
 }
