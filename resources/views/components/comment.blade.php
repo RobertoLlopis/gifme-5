@@ -1,4 +1,4 @@
 
-<div id="{{$comment['id']}}"class="comment">
+<div class="comment">
     <span class="comment-user-name">{{$comment['username']}}&nbsp;</span>{!!$comment['description']!!}
 </div>

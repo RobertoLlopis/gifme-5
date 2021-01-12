@@ -42,18 +42,22 @@ export function handleHomeSubmit(e) {
 function insertComment(parentElement, comment) {
 
     let commentHTML =
-        `<div id="${comment.postId}" class="comment">
-            <span class="comment-user-name">${comment.username}&nbsp;</span>
-            ${comment.comment}
+        `<div class="comment">
+            <span class="comment-user-name">${comment['user_name']}&nbsp;</span>
+            ${comment.description}
         </div>`;
     parentElement.querySelector('.article-comments-cnt').insertAdjacentHTML('beforeend', commentHTML);
 }
 export function handleHomeClick(e) {
     if (e.target.classList.contains('interactive-icon')) {
         handleInteraction(e);
+        return;
     }
-    if (e.target.closest('.searchPopup')) {
-        //TODO: Logic of mention (maybe add info in form element)
+    if (e.target.closest('.more-comments')) {
+        const post = e.target.closest('article');
+        post.querySelector('.article-comments-cnt').innerHTML = '';
+        fetch(`/comments/${post.id}`).then(res => res.json())
+            .then(comments => comments.forEach(comment => insertComment(post, comment)));
     }
     if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
         let userId = e.target.closest('article').dataset['userId'];

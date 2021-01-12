@@ -21479,16 +21479,26 @@ function handleHomeSubmit(e) {
 }
 
 function insertComment(parentElement, comment) {
-  var commentHTML = "<div id=\"".concat(comment.postId, "\" class=\"comment\">\n            <span class=\"comment-user-name\">").concat(comment.username, "&nbsp;</span>\n            ").concat(comment.comment, "\n        </div>");
+  var commentHTML = "<div class=\"comment\">\n            <span class=\"comment-user-name\">".concat(comment['user_name'], "&nbsp;</span>\n            ").concat(comment.description, "\n        </div>");
   parentElement.querySelector('.article-comments-cnt').insertAdjacentHTML('beforeend', commentHTML);
 }
 
 function handleHomeClick(e) {
   if (e.target.classList.contains('interactive-icon')) {
     Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleInteraction"])(e);
+    return;
   }
 
-  if (e.target.closest('.searchPopup')) {//TODO: Logic of mention (maybe add info in form element)
+  if (e.target.closest('.more-comments')) {
+    var post = e.target.closest('article');
+    post.querySelector('.article-comments-cnt').innerHTML = '';
+    fetch("/comments/".concat(post.id)).then(function (res) {
+      return res.json();
+    }).then(function (comments) {
+      return comments.forEach(function (comment) {
+        return insertComment(post, comment);
+      });
+    });
   }
 
   if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {

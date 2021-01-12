@@ -24,8 +24,8 @@ class CommentController extends Controller
 
         return [
             'postId' => $request->postId,
-            'comment'=> $request->comment,
-            'username'=> $request->user()['user_name']
+            'description'=> $request->comment,
+            'user_name'=> $request->user()['user_name']
             ];
     }
 
