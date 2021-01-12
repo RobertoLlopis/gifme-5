@@ -11,6 +11,13 @@ class Comment extends Model
 
     protected $fillable = ['description'];
     
-    
+    public function getComment($post_id){
+
+        return $this->where('post_id',$post_id)
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->select('users.id','users.user_name','comments.description')
+            ->get();
+
+    }
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DislikePostController;
 use App\Http\Controllers\FollowingUserController;
 use App\Http\Controllers\HomeController;
@@ -30,6 +31,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/profile/username/{user_na
 // Creating elements
 Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment");
+
+//Comments
+Route::get('/getComments/{id}', [CommentController::class, 'getCommentById']);
 
 // LikeDislike CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [LikeDislikePostController::class, 'likeDislikeFilter']);

@@ -21,4 +21,10 @@ class CommentController extends Controller
         $article->save();
         return back();
     }
+
+    function getCommentById($post_id){
+
+        $comments = new Comment();
+        return $comments->getComment($post_id);
+    }
 }
