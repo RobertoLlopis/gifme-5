@@ -50,12 +50,7 @@ class Post extends Model
     }
 
     public function getAllLikeDislikes(){
-        $this->likesUsers;
-        $collection = collect($this)->toArray();
-
-        // // counting items into collection
-        $collection['likes_count'] = $this->likesUsers->count();
-        $collection['dislikes_count'] = $this->dislikesUsers->count();
+        $this->likesCount();
 
         // // return $collection->except($this->hiddenForPostCards);
 
@@ -75,7 +70,6 @@ class Post extends Model
         // $postInfo['dislikes_count'] = $post->dislikesUsers->count();
         // $postInfo['like_status'] = $post->likeStatus();
 
-        return $collection;
 
 
     }
@@ -105,6 +99,15 @@ class Post extends Model
         return $this->hasMany(LikeDislikePost::class)->where('status', 1)
             ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
             ->select('users.name', 'users.user_name as user_username');
+    }
+
+    public function likesCount()
+    {
+        // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
+        return $this->hasMany(LikeDislikePost::class)->where('status', 1)
+            ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
+            ->select('users.name', 'users.user_name as user_username')
+            ->count();
     }
 
     public function dislikesUsers()
