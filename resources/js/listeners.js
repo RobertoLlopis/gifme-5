@@ -73,6 +73,7 @@ export function handleNewPostSubmit(e) {
         return;
     }
     let formData = createFormData(e.target);
+    formData.delete('file');
     console.log(formData);
     fetchPost('/post', formData)
         .then(text => console.log(text));
@@ -90,6 +91,7 @@ export const handleProfileSearch = debounceEvent(function (e) {
 }, 800);
 
 export function handleInteraction(e) {
+    e.preventDefault();
     let icon = e.target;
     let postId = getPostId(icon);
     let formData = new FormData();
@@ -104,7 +106,7 @@ export function handleInteraction(e) {
     fetchPost('/updateLikeStatus', formData).then(res => {
         //If 0 ---> icons empty
         res = JSON.parse(res);
-        console.log(res);
+
         if (res['like_status'] == 0) {
             removeFill(icon);
             removeFill(siblingIcon);
@@ -152,7 +154,7 @@ function getPostStatus(elem) {
 }
 function updateCounters(res, parentElement) {
     const likesCounter = parentElement.querySelector(`.likes-info`);
-    res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + ' Likes' : likesCounter.textContent = ' ';
+    res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + `${isHomeSection() ? ' Likes' : ''}` : likesCounter.textContent = ' ';
     const dislikesCounter = parentElement.querySelector(`.dislikes-info`);
-    res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + ' Dislikes' : dislikesCounter.textContent = ' ';
+    res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + `${isHomeSection() ? ' Dislikes' : ''}` : dislikesCounter.textContent = ' ';
 }

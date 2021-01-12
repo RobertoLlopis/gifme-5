@@ -115,6 +115,11 @@ export function isProfileSection() {
 export function manageSearchResultsPopup(e, users) {
     let url;
     if (e.target.id != 'search-profile') {
+        let searchPopup = e.target.parentElement.querySelector('.searchPopup');
+        if (searchPopup) {
+            searchPopup.removeEventListener('click', (e) => replaceWithAnchor(e, input));
+            searchPopup.parentElement.removeChild(searchPopup);
+        }
         e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max flex flex-col z-10 bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>')
         url = '#';
     }
