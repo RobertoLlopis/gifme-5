@@ -31,6 +31,7 @@ class LikeDislikePostController extends Controller
         }        
 
     }
+
     public function createLikeDislike($post_id,$post_status)
     {
         $article = new LikeDislikePost();
@@ -50,6 +51,10 @@ class LikeDislikePostController extends Controller
         LikeDislikePost::where('post_id',$post_id)
                         ->where('user_id',Auth::user()->id)
                         ->update(['status'=>$post_status]);
+    }
+
+    public function getLikesDislikes(){
+        
     }
     
 

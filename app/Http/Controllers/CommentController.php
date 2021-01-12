@@ -11,15 +11,18 @@ class CommentController extends Controller
     public function createComment(Request $request)
     {
         $this->validate($request, [
-            'add-comment' => 'required'
+            'postId' => 'required',
+            'comment' => 'required'
         ]);
 
         $article = new Comment();
         $article->slug = Str::random(11);
-        $article->description = $request['add-comment'];
+        $article->post_id = $request->postId;
+        $article->description = $request->comment;
         $article->user_id = $request->user()->id;
         $article->save();
-        return back();
+
+        return $request->comment;
     }
 
     function getCommentById($post_id){

@@ -21450,8 +21450,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
 
 
-var mentionRegEx = /([@#])([a-z\d_]+)/ig;
-var finalFormatRegEx = /([_#])([a-z\d_]+)/ig;
+var mentionRegEx = /([@#])([a-z.\d_]+)/ig;
+var finalFormatRegEx = /([_#])([a-z.\d_]+)/ig;
 function handleHomeSubmit(e) {
   e.preventDefault();
 
@@ -21461,12 +21461,11 @@ function handleHomeSubmit(e) {
 
     var _users = commentInputValue.match(finalFormatRegEx);
 
-    _users.forEach(function (_user) {
+    _users ? _users.forEach(function (_user) {
       var user = _user.slice(1);
 
-      finalComment == '' ? finalComment = commentInputValue.replace(_user, "<a href=\"/profile/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>")) : finalComment = finalComment.replace(_user, "<a href=\"/profile/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>"));
-    });
-
+      finalComment == '' ? finalComment = commentInputValue.replace(_user, "<a href=\"/profile/username/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>")) : finalComment = finalComment.replace(_user, "<a href=\"/profile/username/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>"));
+    }) : finalComment = commentInputValue;
     var postId = e.target.closest('article').id;
     var formData = new FormData();
     formData.append('postId', postId);
@@ -21988,8 +21987,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

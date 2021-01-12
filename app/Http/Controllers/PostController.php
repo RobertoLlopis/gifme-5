@@ -24,7 +24,6 @@ class PostController extends Controller
 
     public function deletePost($id) {
         Post::destroy($id);
-        return back();
     }
     
 }

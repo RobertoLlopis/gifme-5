@@ -7,28 +7,30 @@ import {
     dissapear
 } from './utils.js';
 import { handleInteraction } from './listeners';
-const mentionRegEx = /([@#])([a-z\d_]+)/ig;
-const finalFormatRegEx = /([_#])([a-z\d_]+)/ig;
+const mentionRegEx = /([@#])([a-z.\d_]+)/ig;
+const finalFormatRegEx = /([_#])([a-z.\d_]+)/ig;
 
 export function handleHomeSubmit(e) {
     e.preventDefault();
-
+ 
     if (e.target.classList.contains('article-add-comment')) {
         let commentInputValue = e.target.querySelector('input').value;
         let finalComment = '';
         let _users = commentInputValue.match(finalFormatRegEx);
-        _users.forEach(_user => {
-            let user = _user.slice(1);
-            finalComment == ''
-                ? finalComment = commentInputValue.replace(_user, `<a href="/profile/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`)
-                : finalComment = finalComment.replace(_user, `<a href="/profile/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`);
-        });
-
+        _users
+            ? _users.forEach(_user => {
+                let user = _user.slice(1);
+                finalComment == ''
+                    ? finalComment = commentInputValue.replace(_user, `<a href="/profile/username/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`)
+                    : finalComment = finalComment.replace(_user, `<a href="/profile/username/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`);
+            })
+            : finalComment = commentInputValue;
+ 
         let postId = e.target.closest('article').id;
         let formData = new FormData();
         formData.append('postId', postId);
         formData.append('comment', finalComment);
-
+ 
         fetchPost('/comment', formData)
             .then(text => console.log(text));
     }

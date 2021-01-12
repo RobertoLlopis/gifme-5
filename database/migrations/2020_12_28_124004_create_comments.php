@@ -19,7 +19,7 @@ class CreateComments extends Migration
             $table->char('slug',11);
             $table->foreignId('user_id')->constrained();
             $table->foreignId('post_id')->constrained();
-            $table->char('description', 200); 
+            $table->text('description', 1000); 
         });
     }
 

@@ -54,7 +54,7 @@ class Post extends Model
         return $this->hasMany(Comment::class)
             ->join('users', 'users.id', '=', 'comments.user_id')
             ->select('users.name as name', 'users.user_name as username', 'comments.description', 'comments.id')
-            ->take(2);
+            ->take(5);
     }
 
     public function user()

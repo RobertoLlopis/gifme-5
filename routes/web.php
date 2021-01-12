@@ -29,14 +29,19 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeControll
 Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{user_id}', [ProfileController::class, 'index'])->name('profile');
 Route::middleware(['auth:sanctum', 'verified'])->get('/profile/username/{user_name}', [ProfileController::class, 'byUserName']);
 // Creating elements
-Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");
 Route::middleware(['auth:sanctum', 'verified'])->post('/comment', [CommentController::class, 'createComment'])->name("create_post_comment");
 
 //Comments
-Route::get('/getComments/{id}', [CommentController::class, 'getCommentById']);
+Route::get('/comments/{id}', [CommentController::class, 'getCommentById']);
+
+// Posts CRUD 
+Route::middleware(['auth:sanctum', 'verified'])->post('/post', [PostController::class, 'createPost'])->name("create_post");
+Route::middleware(['auth:sanctum', 'verified'])->post('/deletePost/{post_id}', [PostController::class, 'deletePost']);
 
 // LikeDislike CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [LikeDislikePostController::class, 'likeDislikeFilter']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikes', [LikeDislikePostController::class, 'likeDislikeFilter']);
+
 
 // Following CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/follow/{user_following_id}', [FollowingUserController::class, 'followingFilter']);
