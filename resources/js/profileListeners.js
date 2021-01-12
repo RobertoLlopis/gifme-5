@@ -1,4 +1,5 @@
 import { $, fetchPost } from './utils';
+
 export function handleProfileFollow(e) {
     fetchPost(`/follow/${$('#profile-info').dataset['userId']}`).then(res => res == 0 ? convertToFollowBtn() : convertToUnfollowBtn());
 }

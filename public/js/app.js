@@ -21450,13 +21450,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
 
 
-var commentMentionsBuffer = {};
+var mentionRegEx = /([@#])([a-z\d_]+)/ig;
+var finalFormatRegEx = /([_#])([a-z\d_]+)/ig;
 function handleHomeSubmit(e) {
   e.preventDefault();
 
   if (e.target.classList.contains('article-add-comment')) {
+    var commentInputValue = e.target.querySelector('input').value;
+    var finalComment = '';
+
+    var _users = commentInputValue.match(finalFormatRegEx);
+
+    _users.forEach(function (_user) {
+      var user = _user.slice(1);
+
+      finalComment == '' ? finalComment = commentInputValue.replace(_user, "<a href=\"/profile/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>")) : finalComment = finalComment.replace(_user, "<a href=\"/profile/".concat(user, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(user, "</a>"));
+    });
+
     var postId = e.target.closest('article').id;
-    var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target, [['postId', postId]]);
+    var formData = new FormData();
+    formData.append('postId', postId);
+    formData.append('comment', finalComment);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/comment', formData).then(function (text) {
       return console.log(text);
     });
@@ -21493,7 +21507,6 @@ function handleSidebarClick(e) {
     user.remove();
   }
 }
-var mentionRegEx = /([@#])([a-z\d_]+)/ig;
 var handleHomeInputKeyup = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
   var input = e.target;
 
@@ -21514,15 +21527,12 @@ var handleHomeInputKeyup = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["deboun
 
 function replaceWithAnchor(e, input) {
   e.preventDefault();
-  var userMentionId = e.target.dataset.userId;
-  var username = e.target.querySelector('.username').textContent.trim();
-  var inputValueReplaced = input.value.replace(mentionRegEx, "<a href=\"/profile/".concat(userMentionId, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(username, "</a>"));
-  input.value = input.value.replace(mentionRegEx, username);
-  commentMentionsBuffer[e.target.closest('article').id] = {
-    id: userMentionId,
-    username: username,
-    comment: inputValueReplaced
-  };
+  var username = e.target.closest('a').querySelector('.username').textContent.trim(); // let inputValueReplaced = input.value.replace(mentionRegEx, `<a href="/profile/${userMentionId}" class="bg-yellow-300 font-black font-bold">${username}</a>`);
+
+  input.value = input.value.replace(mentionRegEx, '_' + username); // commentMentionsBuffer.comment = inputValueReplaced;
+
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(e.target.closest('form').querySelector('.searchPopup'));
+  input.focus();
   console.log(commentMentionsBuffer);
 }
 
@@ -21615,6 +21625,7 @@ function handleNewPostSubmit(e) {
   }
 
   var formData = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["createFormData"])(e.target);
+  formData["delete"]('file');
   console.log(formData);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/post', formData).then(function (text) {
     return console.log(text);
@@ -21630,6 +21641,7 @@ var handleProfileSearch = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounc
   });
 }, 800);
 function handleInteraction(e) {
+  e.preventDefault();
   var icon = e.target;
   var postId = getPostId(icon);
   var formData = new FormData();
@@ -21642,7 +21654,6 @@ function handleInteraction(e) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/updateLikeStatus', formData).then(function (res) {
     //If 0 ---> icons empty
     res = JSON.parse(res);
-    console.log(res);
 
     if (res['like_status'] == 0) {
       removeFill(icon);
@@ -21701,9 +21712,9 @@ function getPostStatus(elem) {
 
 function updateCounters(res, parentElement) {
   var likesCounter = parentElement.querySelector(".likes-info");
-  res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + ' Likes' : likesCounter.textContent = ' ';
+  res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + "".concat(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])() ? ' Likes' : '') : likesCounter.textContent = ' ';
   var dislikesCounter = parentElement.querySelector(".dislikes-info");
-  res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + ' Dislikes' : dislikesCounter.textContent = ' ';
+  res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + "".concat(Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])() ? ' Dislikes' : '') : dislikesCounter.textContent = ' ';
 }
 
 /***/ }),
@@ -21927,6 +21938,16 @@ function manageSearchResultsPopup(e, users) {
   var url;
 
   if (e.target.id != 'search-profile') {
+    var _searchPopup = e.target.parentElement.querySelector('.searchPopup');
+
+    if (_searchPopup) {
+      _searchPopup.removeEventListener('click', function (e) {
+        return replaceWithAnchor(e, input);
+      });
+
+      _searchPopup.parentElement.removeChild(_searchPopup);
+    }
+
     e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max flex flex-col z-10 bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>');
     url = '#';
   }
