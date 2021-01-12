@@ -22,7 +22,7 @@ class HomeController extends Controller
 
         //Recabar la info de los posts as $posts
         $posts = $this->getPostsInfo();
-        $following = $this->getAllFollowingById(Auth::user()->id);
+        $following = $this->getAllFollowingById();
         $suggestions = $this->getFollowingSuggestions();
 
         return view('home', compact('posts', 'following', 'suggestions'));
@@ -44,23 +44,25 @@ class HomeController extends Controller
         //return view('delete',['post'=> $outputPosts[1]]);
     }
 
-    public function getAllFollowingById($id)
+    public function getAllFollowingById()
     {
-        $followingUsers = FollowingUser::all()->where('user_id', $id);
-        $outputUsers = [];
+        $followingUsers = FollowingUser::all()
+                                        ->where('user_id', Auth::user()->id)
+                                        ->whereNotIn('user_following_id', Auth::user()->id);
+        $outputPosts = [];
         foreach ($followingUsers as $user) {
-            array_push($outputUsers, $user->getFollowingUserInfo());
+            array_push($outputPosts, $user->getFollowingUserInfo());
         }
-        return $outputUsers;
+        return $outputPosts;
     }
 
     public function getFollowingSuggestions()
     {
-        $suggestions = User::inRandomOrder()
-            ->whereNotIn('id', [Auth::user()->id])
-            ->select('name', 'user_name', 'profile_photo_path', 'id')
-            ->limit(5)
-            ->get();
+        $followingId = FollowingUser::all()->where('user_id', Auth::user()->id)->pluck('user_following_id')->toArray();
+        $suggestions = User::whereNotIn('id', $followingId)
+                            ->select('name', 'user_name', 'profile_photo_path', 'id')
+                            ->limit(5)
+                            ->get();
 
         return $suggestions;
     }
