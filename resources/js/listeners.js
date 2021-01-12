@@ -150,3 +150,8 @@ function getPostStatus(elem) {
     if (elem.classList.contains('fa-heart')) return 1;
     return 2;
 }
+function plusOne(interaction, parentElement) {
+    const counter = parentElement.querySelector(`.${interaction}s-count`);
+    let count = Number(counter.textContent);
+    counter.textContent = count + 1;
+}

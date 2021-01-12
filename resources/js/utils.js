@@ -1,5 +1,5 @@
 const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
-const username = document.head.querySelector("[name~=username]").content;
+// const username = document.head.querySelector("[name~=username][content]").content;
 
 export function $(selector) {
     return document.querySelector(selector);
@@ -115,7 +115,7 @@ export function isProfileSection() {
 export function manageSearchResultsPopup(e, users) {
     let url;
     if (e.target.id != 'search-profile') {
-        e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>')
+        e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max flex flex-col z-10 bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>')
         url = '#';
     }
     let searchPopup = e.target.parentElement.querySelector('.searchPopup');
@@ -124,16 +124,13 @@ export function manageSearchResultsPopup(e, users) {
     fadeIn(searchPopup);
 }
 
-'@jkdsfgddjhdjk dfgdsjgsd'
-'<span >kjdfdfhkdfh</span> dfdfd '
-
 function createSearchResultContainer(user, endpoint) {
-    return `<a href="${endpoint}" class="flex items-center mb-2">
+    return `<a href="${endpoint}" data-user-id="${user.id}" class="flex items-center mb-2 w-full">
     <div class="cursor-pointer flex-shrink-0 h-15 w-15">
         <img class="h-15 w-15 rounded-full border-purple-900 border-2" src="${user['profile_photo_url']}" alt="avatar">
     </div>
     <div class="ml-4">
-        <div class="cursor-pointer text-lg font-medium text-purple-900">
+        <div class="username cursor-pointer text-lg font-medium text-purple-900">
             ${user['user_name']}
         </div>
     </div>

@@ -4,7 +4,7 @@ require('alpinejs');
 
 import { $, isHomeSection, isProfileSection } from './utils.js';
 import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction, handleProfileSearch } from './listeners';
-import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputChange } from './homeListeners';
+import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputKeyup } from './homeListeners';
 import { showIconLayer, hideIconLayer, handleProfileFollow } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
 
@@ -22,7 +22,7 @@ $('body').addEventListener('drop', dropHandler);
 /*============================
 ======= Search Profile 
 =============================*/
-$('#search-profile').addEventListener('change', handleProfileSearch);
+$('#search-profile').addEventListener('keyup', handleProfileSearch);
 
 /*============================
 ======== Home Section 
@@ -31,7 +31,7 @@ if (isHomeSection()) {
     //Handle any form submit from home section as new comments or likes
     $('.home').addEventListener('submit', handleHomeSubmit);
     $('.home').addEventListener('click', handleHomeClick);
-    $('.home').addEventListener('change', handleHomeInputChange);
+    $('.home').addEventListener('keyup', handleHomeInputKeyup);
     $('.sidebar').addEventListener('click', handleSidebarClick);
 };
 
@@ -42,6 +42,7 @@ if (isHomeSection()) {
 if (isProfileSection()) {
     $('#profile-posts-container').addEventListener('mouseover', showIconLayer);
     $('#profile-posts-container').addEventListener('mouseout', hideIconLayer);
+    $('#profile-posts-container').addEventListener('click', handleInteraction);
     $('#profile-follow').addEventListener('click', handleProfileFollow);
 };
 

@@ -4,11 +4,12 @@ import {
     debounceEvent,
     createFormData,
     createFollowingUser,
+    manageSearchResultsPopup,
     dissapear
 } from './utils.js';
 import { handleFollowClick, handleInteraction } from './listeners';
 
-
+let commentMentionsBuffer = {};
 export function handleHomeSubmit(e) {
     e.preventDefault();
 
@@ -47,11 +48,35 @@ export function handleSidebarClick(e) {
         user.remove();
     }
 }
-export const handleHomeInputChange = debounceEvent(function (e) {
-    const mentionRegEx = /([@#])([a-z\d_]+)/ig;
-    if (mentionRegEx.test(e.target.value)) {
-        //fetch Users
-        manageSearchResultsPopup(e, users);
-    }
+const mentionRegEx = /([@#])([a-z\d_]+)/ig;
+export const handleHomeInputKeyup = debounceEvent(function (e) {
+    const input = e.target;
+    if (mentionRegEx.test(input.value)) {
+        let matched = input.value.match(mentionRegEx);
 
+        let formData = new FormData();
+        formData.append('search', matched[0].slice(1));
+        fetchPost('/search', formData).then(res => {
+            let users = JSON.parse(res);
+            console.log(users);
+            manageSearchResultsPopup(e, users);
+            input.parentElement.querySelector('.searchPopup').addEventListener('click', (e) => replaceWithAnchor(e, input));
+        });
+    }
 }, 500);
+
+function replaceWithAnchor(e, input) {
+    e.preventDefault();
+    let userMentionId = e.target.dataset.userId;
+    let username = e.target.querySelector('.username').textContent.trim();
+    let inputValueReplaced = input.value.replace(mentionRegEx, `<a href="/profile/${userMentionId}" class="bg-yellow-300 font-black font-bold">${username}</a>`);
+
+    input.value = input.value.replace(mentionRegEx, username);
+
+    commentMentionsBuffer[e.target.closest('article').id] = {
+        id: userMentionId,
+        username,
+        comment: inputValueReplaced
+    }
+    console.log(commentMentionsBuffer);
+}

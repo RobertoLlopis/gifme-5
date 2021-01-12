@@ -21311,7 +21311,7 @@ Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('body').addEventListener('dr
 ======= Search Profile 
 =============================*/
 
-Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#search-profile').addEventListener('change', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleProfileSearch"]);
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#search-profile').addEventListener('keyup', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleProfileSearch"]);
 /*============================
 ======== Home Section 
 =============================*/
@@ -21320,7 +21320,7 @@ if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) {
   //Handle any form submit from home section as new comments or likes
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('submit', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeSubmit"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeClick"]);
-  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('change', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeInputChange"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.home').addEventListener('keyup', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleHomeInputKeyup"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('.sidebar').addEventListener('click', _homeListeners__WEBPACK_IMPORTED_MODULE_2__["handleSidebarClick"]);
 }
 
@@ -21332,6 +21332,7 @@ if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isHomeSection"])()) {
 if (Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["isProfileSection"])()) {
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseover', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["showIconLayer"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('mouseout', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["hideIconLayer"]);
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-posts-container').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleInteraction"]);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#profile-follow').addEventListener('click', _profileListeners__WEBPACK_IMPORTED_MODULE_3__["handleProfileFollow"]);
 }
 
@@ -21436,7 +21437,7 @@ function dragEventHandler(e) {
 /*!***************************************!*\
   !*** ./resources/js/homeListeners.js ***!
   \***************************************/
-/*! exports provided: handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputChange */
+/*! exports provided: handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputKeyup */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21444,11 +21445,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeSubmit", function() { return handleHomeSubmit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeClick", function() { return handleHomeClick; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleSidebarClick", function() { return handleSidebarClick; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeInputChange", function() { return handleHomeInputChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleHomeInputKeyup", function() { return handleHomeInputKeyup; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 /* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listeners */ "./resources/js/listeners.js");
 
 
+var commentMentionsBuffer = {};
 function handleHomeSubmit(e) {
   e.preventDefault();
 
@@ -21491,14 +21493,38 @@ function handleSidebarClick(e) {
     user.remove();
   }
 }
-var handleHomeInputChange = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
-  var mentionRegEx = /([@#])([a-z\d_]+)/ig;
+var mentionRegEx = /([@#])([a-z\d_]+)/ig;
+var handleHomeInputKeyup = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["debounceEvent"])(function (e) {
+  var input = e.target;
 
-  if (mentionRegEx.test(e.target.value)) {
-    //fetch Users
-    manageSearchResultsPopup(e, users);
+  if (mentionRegEx.test(input.value)) {
+    var matched = input.value.match(mentionRegEx);
+    var formData = new FormData();
+    formData.append('search', matched[0].slice(1));
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/search', formData).then(function (res) {
+      var users = JSON.parse(res);
+      console.log(users);
+      Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["manageSearchResultsPopup"])(e, users);
+      input.parentElement.querySelector('.searchPopup').addEventListener('click', function (e) {
+        return replaceWithAnchor(e, input);
+      });
+    });
   }
 }, 500);
+
+function replaceWithAnchor(e, input) {
+  e.preventDefault();
+  var userMentionId = e.target.dataset.userId;
+  var username = e.target.querySelector('.username').textContent.trim();
+  var inputValueReplaced = input.value.replace(mentionRegEx, "<a href=\"/profile/".concat(userMentionId, "\" class=\"bg-yellow-300 font-black font-bold\">").concat(username, "</a>"));
+  input.value = input.value.replace(mentionRegEx, username);
+  commentMentionsBuffer[e.target.closest('article').id] = {
+    id: userMentionId,
+    username: username,
+    comment: inputValueReplaced
+  };
+  console.log(commentMentionsBuffer);
+}
 
 /***/ }),
 
@@ -21671,6 +21697,12 @@ function getPostStatus(elem) {
   return 2;
 }
 
+function plusOne(interaction, parentElement) {
+  var counter = parentElement.querySelector(".".concat(interaction, "s-count"));
+  var count = Number(counter.textContent);
+  counter.textContent = count + 1;
+}
+
 /***/ }),
 
 /***/ "./resources/js/profileListeners.js":
@@ -21768,8 +21800,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isProfileSection", function() { return isProfileSection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "manageSearchResultsPopup", function() { return manageSearchResultsPopup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFollowingUser", function() { return createFollowingUser; });
-var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
-var username = document.head.querySelector("[name~=username]").content;
+var csrfToken = document.head.querySelector("[name~=csrf-token][content]").content; // const username = document.head.querySelector("[name~=username][content]").content;
+
 function $(selector) {
   return document.querySelector(selector);
 }
@@ -21892,7 +21924,7 @@ function manageSearchResultsPopup(e, users) {
   var url;
 
   if (e.target.id != 'search-profile') {
-    e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>');
+    e.target.insertAdjacentHTML('afterend', '<div class="searchPopup hidden absolute w-full h-max flex flex-col z-10 bg-white pt-3 pb-1 px-1 rounded-b-lg"></div>');
     url = '#';
   }
 
@@ -21905,7 +21937,7 @@ function manageSearchResultsPopup(e, users) {
 }
 
 function createSearchResultContainer(user, endpoint) {
-  return "<a href=\"".concat(endpoint, "\" class=\"flex items-center mb-2\">\n    <div class=\"cursor-pointer flex-shrink-0 h-15 w-15\">\n        <img class=\"h-15 w-15 rounded-full border-purple-900 border-2\" src=\"").concat(user['profile_photo_url'], "\" alt=\"avatar\">\n    </div>\n    <div class=\"ml-4\">\n        <div class=\"cursor-pointer text-lg font-medium text-purple-900\">\n            ").concat(user['user_name'], "\n        </div>\n    </div>\n</a>");
+  return "<a href=\"".concat(endpoint, "\" data-user-id=\"").concat(user.id, "\" class=\"flex items-center mb-2 w-full\">\n    <div class=\"cursor-pointer flex-shrink-0 h-15 w-15\">\n        <img class=\"h-15 w-15 rounded-full border-purple-900 border-2\" src=\"").concat(user['profile_photo_url'], "\" alt=\"avatar\">\n    </div>\n    <div class=\"ml-4\">\n        <div class=\"username cursor-pointer text-lg font-medium text-purple-900\">\n            ").concat(user['user_name'], "\n        </div>\n    </div>\n</a>");
 }
 
 function createFollowingUser(user) {
@@ -21932,8 +21964,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
 
 
 /***/ })
