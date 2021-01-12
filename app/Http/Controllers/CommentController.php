@@ -11,12 +11,12 @@ class CommentController extends Controller
     public function createComment(Request $request)
     {
         $this->validate($request, [
-            'comment' => 'required'
+            'add-comment' => 'required'
         ]);
 
         $article = new Comment();
         $article->slug = Str::random(11);
-        $article->description = $request->description;
+        $article->description = $request['add-comment'];
         $article->user_id = $request->user()->id;
         $article->save();
         return back();

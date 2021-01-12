@@ -11,20 +11,15 @@ class PostController extends Controller
     //
     public function createPost(Request $request) {
         $this->validate($request, [
-            'title' => 'required',
             'description' => 'required',
-            'gif' => 'required',
+            'custom-gif-url' => 'required',
         ]);
-        
 
         $article = new Post;
-        $article->slug = Str::random(11);
-        $article->title = $request->title;
-        $article->description = $request->description;
-        $article->gif = $request->gif;
+        $article->description = $request['description'];
+        $article->gif = $request->input('custom-gif-url');
         $article->user_id = $request->user()->id;
         $article->save();
-        return back();
     }
 
     public function deletePost($id) {

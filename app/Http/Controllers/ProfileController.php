@@ -16,10 +16,12 @@ class ProfileController extends Controller
         $profile = $this->getProfileUserInfo($user_id);
         $posts = $this->getPostsCardsInfo($user_id);
         $following_status = $this->profileFollowingStatus($user_id);
+        $is_user_active = $this->checkUserActive($user_id);
 
-        return view('profile', compact('posts', 'profile', 'following_status'));
-        // return compact('profile', 'posts', 'user_id', 'following_status');
+        return view('profile', compact('posts', 'profile', 'following_status','is_user_active'));
+        // return compact('profile', 'posts', 'user_id', 'following_status','is_user_active');
     }
+
     public function byUserName($user_name)
     {
         $user_id = User::where('user_name', $user_name)->get()->first()['id'];
@@ -60,5 +62,12 @@ class ProfileController extends Controller
             return 1;
         }
         return 0;
+    }
+
+    public function checkUserActive($user_id){
+        if($user_id == Auth::user()->id){
+            return true;
+        } 
+        return false;
     }
 }

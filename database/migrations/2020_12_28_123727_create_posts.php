@@ -16,8 +16,6 @@ class CreatePosts extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->char('slug',11);
-            $table->char('title', 15);
             $table->char('description', 200);
             $table->char('gif',200);
             $table->foreignId('user_id')->constrained();

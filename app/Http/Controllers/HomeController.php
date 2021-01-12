@@ -58,7 +58,14 @@ class HomeController extends Controller
 
     public function getFollowingSuggestions()
     {
-        $followingId = FollowingUser::all()->where('user_id', Auth::user()->id)->pluck('user_following_id')->toArray();
+        $followingId = FollowingUser::all()
+                                    ->where('user_id', Auth::user()->id)
+                                    ->pluck('user_following_id')
+                                    ->toArray();
+
+        //add active user to array
+        array_push($followingId,Auth::user()->id);
+                                    
         $suggestions = User::whereNotIn('id', $followingId)
                             ->select('name', 'user_name', 'profile_photo_path', 'id')
                             ->limit(5)
