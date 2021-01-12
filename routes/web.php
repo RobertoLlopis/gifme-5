@@ -60,3 +60,5 @@ Route::get('/getInfoBack', [HomeController::class, 'getPostsInfo']);
 //=================== Getting FOLLOWING
 // list by ID
 Route::get('/following/{id}', [HomeController::class, 'getAllFollowingById']);
+
+Route::get('/postStatus/{id}', [LikeDislikePost::class, 'getPostLikesDislikes']);
