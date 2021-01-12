@@ -11,25 +11,29 @@
             <div class="likes mr-10 text-center">
                 <i class="interactive-icon {{$post['like_status'] == 1 ? 'fas' : 'far'}} fa-heart inline-block w-full"></i>
                 <span class="likes-info">
-                    @if($post['likes_count'] > 0)
-                    <span class="likes-count">{{$post['likes_count']}}</span> Likes
-                    @endif
+                        @if($post['likes_count'] > 0)
+                        {{$post['likes_count']}} Likes
+                        @endif
                 </span>
             </div>
             <div class="comments mr-10 text-center">
                 <i class="interactive-icon far fa-comment scale-x-100 inline-block w-full"></i>
                 <span class="comments-info">
-                    @if($post['comments_count'] > 0)
-                    <span class="comments-count">{{$post['comments_count']}}</span> comments
-                    @endif
+                    
+                        @if($post['comments_count'] > 0)
+                        {{$post['comments_count']}} Comments
+                        @endif
+                     
                 </span>
             </div>
             <div class="dislikes mr-10 text-center">
                 <i class="interactive-icon {{$post['like_status'] == 2 ? 'fas' : 'far'}} fa-dizzy inline-block w-full"></i>
                 <span class="dislikes-info">
+                    
                     @if($post['dislikes_count'] > 0)
-                    <span class="dislikes-count">{{$post['dislikes_count']}}</span> Dislikes
+                    {{$post['dislikes_count']}} Dislikes
                     @endif
+                     
                 </span>
             </div>
         </div>

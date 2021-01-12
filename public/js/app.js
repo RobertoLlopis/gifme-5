@@ -21641,23 +21641,25 @@ function handleInteraction(e) {
   formData.append('post_status', status);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/updateLikeStatus', formData).then(function (res) {
     //If 0 ---> icons empty
-    if (res == 0) {
+    res = JSON.parse(res);
+    console.log(res);
+
+    if (res['like_status'] == 0) {
       removeFill(icon);
       removeFill(siblingIcon);
-      return;
     }
 
-    if (res == 1) {
+    if (res['like_status'] == 1) {
       fillIcon(parentElement.querySelector('.fa-heart'));
       removeFill(parentElement.querySelector('.fa-dizzy'));
-      return;
     }
 
-    if (res == 2) {
+    if (res['like_status'] == 2) {
       fillIcon(parentElement.querySelector('.fa-dizzy'));
       removeFill(parentElement.querySelector('.fa-heart'));
-      return;
     }
+
+    updateCounters(res, parentElement);
   });
 }
 
@@ -21697,10 +21699,11 @@ function getPostStatus(elem) {
   return 2;
 }
 
-function plusOne(interaction, parentElement) {
-  var counter = parentElement.querySelector(".".concat(interaction, "s-count"));
-  var count = Number(counter.textContent);
-  counter.textContent = count + 1;
+function updateCounters(res, parentElement) {
+  var likesCounter = parentElement.querySelector(".likes-info");
+  res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + ' Likes' : likesCounter.textContent = ' ';
+  var dislikesCounter = parentElement.querySelector(".dislikes-info");
+  res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + ' Dislikes' : dislikesCounter.textContent = ' ';
 }
 
 /***/ }),

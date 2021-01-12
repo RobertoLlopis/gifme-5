@@ -103,21 +103,21 @@ export function handleInteraction(e) {
     formData.append('post_status', status);
     fetchPost('/updateLikeStatus', formData).then(res => {
         //If 0 ---> icons empty
-        if (res == 0) {
+        res = JSON.parse(res);
+        console.log(res);
+        if (res['like_status'] == 0) {
             removeFill(icon);
             removeFill(siblingIcon);
-            return;
         }
-        if (res == 1) {
+        if (res['like_status'] == 1) {
             fillIcon(parentElement.querySelector('.fa-heart'));
             removeFill(parentElement.querySelector('.fa-dizzy'));
-            return;
         }
-        if (res == 2) {
+        if (res['like_status'] == 2) {
             fillIcon(parentElement.querySelector('.fa-dizzy'));
             removeFill(parentElement.querySelector('.fa-heart'));
-            return;
         }
+        updateCounters(res, parentElement);
     });
 }
 function fillIcon(icon) {
@@ -150,8 +150,9 @@ function getPostStatus(elem) {
     if (elem.classList.contains('fa-heart')) return 1;
     return 2;
 }
-function plusOne(interaction, parentElement) {
-    const counter = parentElement.querySelector(`.${interaction}s-count`);
-    let count = Number(counter.textContent);
-    counter.textContent = count + 1;
+function updateCounters(res, parentElement) {
+    const likesCounter = parentElement.querySelector(`.likes-info`);
+    res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + ' Likes' : likesCounter.textContent = ' ';
+    const dislikesCounter = parentElement.querySelector(`.dislikes-info`);
+    res['dislikes_count'] > 0 ? dislikesCounter.textContent = res['dislikes_count'] + ' Dislikes' : dislikesCounter.textContent = ' ';
 }
