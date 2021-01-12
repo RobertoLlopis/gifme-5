@@ -55,24 +55,20 @@ class LikeDislikePostController extends Controller
     }
     
     public function getLikesDislikes(Request $request){
-        // $arrayPosts = $request['rendered_posts'];
+        $arrayPosts = $request['rendered_posts'];
 
-        $arrayPosts = [1,2,3,4,5,6];
+        // $arrayPosts = [1,2,3,4,5,6];
 
-        $posts = Post::all();
+        $posts = Post::whereIn('id',$arrayPosts)->get();
+        $output=[];
 
         foreach($posts as $post){
-            $post->getAllLikeDislikes();
+            $info = $post->getAllLikeDislikes();
+            $output[$info['id']] = $info;
         }
 
-        return $posts;
+        return $output;
 
-
-
-
-
-        // return LikeDislikePost::getAllLikeDislikes();
-        
     }
     
     

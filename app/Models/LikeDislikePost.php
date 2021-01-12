@@ -30,11 +30,5 @@ class LikeDislikePost extends Model
         return $postInfo;
     }
 
-<<<<<<< HEAD
     
-=======
-    /* public static function getAllLikeDislikes(){
-        $likeDislikes
-    } */
->>>>>>> 652d208e15ca05242a649c263b1238b6bbd3f12e
 }

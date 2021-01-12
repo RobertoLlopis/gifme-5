@@ -16,7 +16,9 @@ class Post extends Model
     protected $hiddenForPost = ['updated_at', 'created_at', 'slug', 'title', 'user_id'];
 
     protected $hiddenForPostCards = ['updated_at', 'created_at', 'slug', 'title', 'user_id', 'description'];
-
+    
+    protected $hiddenForLikesDislikes = ['updated_at', 'created_at', 'slug', 'title', 'user_id', 'description','gif'];
+    
     public function getPostInfo()
     {
         $this->comments;
@@ -49,29 +51,16 @@ class Post extends Model
         return $collection->except($this->hiddenForPostCards);
     }
 
-    public function getAllLikeDislikes(){
-        $this->likesCount();
+    public function getAllLikeDislikes()
+    {
 
-        // // return $collection->except($this->hiddenForPostCards);
+        $collection = collect($this);
 
-        // $hidden = ['id','updated_at', 'created_at', 'slug', 'title', 'user_id','description','gif'];
+        // counting items into collection
+        $collection->put('likes_count', $this->likesUsers->count());
+        $collection->put('dislikes_count', $this->dislikesUsers->count());
 
-        // $post = Post::find($post_id);
-        // $post->makeHidden($hidden);
-
-        // $post->likesUsers;
-        // $post->dislikesUsers;
-
-        // $postInfo = collect($post)
-        //             ->toArray();
-
-        // // counting items and status into postInfo
-        // $postInfo['likes_count'] = $post->likesUsers->count();
-        // $postInfo['dislikes_count'] = $post->dislikesUsers->count();
-        // $postInfo['like_status'] = $post->likeStatus();
-
-
-
+        return $collection->except($this->hiddenForLikesDislikes);
     }
 
     public function comments()
@@ -99,15 +88,6 @@ class Post extends Model
         return $this->hasMany(LikeDislikePost::class)->where('status', 1)
             ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
             ->select('users.name', 'users.user_name as user_username');
-    }
-
-    public function likesCount()
-    {
-        // return $this->hasManyThrough(User::class, LikeDislikePost::class, 'user_id', 'id','id','post_id')->select('name', 'profile_photo_path');
-        return $this->hasMany(LikeDislikePost::class)->where('status', 1)
-            ->join('users', 'users.id', '=', 'like_dislike_posts.user_id')
-            ->select('users.name', 'users.user_name as user_username')
-            ->count();
     }
 
     public function dislikesUsers()
