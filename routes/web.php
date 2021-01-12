@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/deletePost/{post_id}', [
 
 // LikeDislike CRUD
 Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikeStatus', [LikeDislikePostController::class, 'likeDislikeFilter']);
-Route::middleware(['auth:sanctum', 'verified'])->post('/updateLikes', [LikeDislikePostController::class, 'likeDislikeFilter']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/updateLikes', [LikeDislikePostController::class, 'getLikesDislikes']);
 
 
 // Following CRUD

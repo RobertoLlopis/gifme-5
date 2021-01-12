@@ -49,6 +49,37 @@ class Post extends Model
         return $collection->except($this->hiddenForPostCards);
     }
 
+    public function getAllLikeDislikes(){
+        $this->likesUsers;
+        $collection = collect($this)->toArray();
+
+        // // counting items into collection
+        $collection['likes_count'] = $this->likesUsers->count();
+        $collection['dislikes_count'] = $this->dislikesUsers->count();
+
+        // // return $collection->except($this->hiddenForPostCards);
+
+        // $hidden = ['id','updated_at', 'created_at', 'slug', 'title', 'user_id','description','gif'];
+
+        // $post = Post::find($post_id);
+        // $post->makeHidden($hidden);
+
+        // $post->likesUsers;
+        // $post->dislikesUsers;
+
+        // $postInfo = collect($post)
+        //             ->toArray();
+
+        // // counting items and status into postInfo
+        // $postInfo['likes_count'] = $post->likesUsers->count();
+        // $postInfo['dislikes_count'] = $post->dislikesUsers->count();
+        // $postInfo['like_status'] = $post->likeStatus();
+
+        return $collection;
+
+
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class)
