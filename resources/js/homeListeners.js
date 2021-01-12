@@ -41,7 +41,7 @@ export function handleHomeClick(e) {
         //TODO: Logic of mention (maybe add info in form element)
     }
     if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
-        let userId = e.target.closest('article').id;
+        let userId = e.target.closest('article').dataset['userId'];
         if (userId) window.location.href = `/profile/${userId}`;
     }
 }

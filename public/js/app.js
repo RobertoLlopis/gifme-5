@@ -21485,7 +21485,7 @@ function handleHomeClick(e) {
   }
 
   if (e.target.closest('.article-header') || e.target.closest('.article-user-name')) {
-    var userId = e.target.closest('article').id;
+    var userId = e.target.closest('article').dataset['userId'];
     if (userId) window.location.href = "/profile/".concat(userId);
   }
 }
