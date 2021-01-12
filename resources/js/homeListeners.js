@@ -12,7 +12,7 @@ const finalFormatRegEx = /([_#])([a-z.\d_]+)/ig;
 
 export function handleHomeSubmit(e) {
     e.preventDefault();
- 
+
     if (e.target.classList.contains('article-add-comment')) {
         let commentInputValue = e.target.querySelector('input').value;
         let finalComment = '';
@@ -25,15 +25,28 @@ export function handleHomeSubmit(e) {
                     : finalComment = finalComment.replace(_user, `<a href="/profile/username/${user}" class="bg-yellow-300 font-black font-bold">${user}</a>`);
             })
             : finalComment = commentInputValue;
- 
+
         let postId = e.target.closest('article').id;
         let formData = new FormData();
         formData.append('postId', postId);
         formData.append('comment', finalComment);
- 
+
         fetchPost('/comment', formData)
-            .then(text => console.log(text));
+            .then(comment => {
+                commentInputValue = '';
+                console.log(comment);
+                insertComment(e.target.closest('article'), JSON.parse(comment));
+            });
     }
+}
+function insertComment(parentElement, comment) {
+
+    let commentHTML =
+        `<div id="${comment.postId}" class="comment">
+            <span class="comment-user-name">${comment.username}&nbsp;</span>
+            ${comment.comment}
+        </div>`;
+    parentElement.querySelector('.article-comments-cnt').insertAdjacentHTML('beforeend', commentHTML);
 }
 export function handleHomeClick(e) {
     if (e.target.classList.contains('interactive-icon')) {

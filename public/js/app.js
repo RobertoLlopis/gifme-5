@@ -21470,11 +21470,19 @@ function handleHomeSubmit(e) {
     var formData = new FormData();
     formData.append('postId', postId);
     formData.append('comment', finalComment);
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/comment', formData).then(function (text) {
-      return console.log(text);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/comment', formData).then(function (comment) {
+      commentInputValue = '';
+      console.log(comment);
+      insertComment(e.target.closest('article'), JSON.parse(comment));
     });
   }
 }
+
+function insertComment(parentElement, comment) {
+  var commentHTML = "<div id=\"".concat(comment.postId, "\" class=\"comment\">\n            <span class=\"comment-user-name\">").concat(comment.username, "&nbsp;</span>\n            ").concat(comment.comment, "\n        </div>");
+  parentElement.querySelector('.article-comments-cnt').insertAdjacentHTML('beforeend', commentHTML);
+}
+
 function handleHomeClick(e) {
   if (e.target.classList.contains('interactive-icon')) {
     Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["handleInteraction"])(e);
@@ -21987,8 +21995,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! c:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
 
 
 /***/ })
