@@ -152,7 +152,7 @@ function getPostStatus(elem) {
     if (elem.classList.contains('fa-heart')) return 1;
     return 2;
 }
-function updateCounters(res, parentElement) {
+export function updateCounters(res, parentElement) {
     const likesCounter = parentElement.querySelector(`.likes-info`);
     res['likes_count'] > 0 ? likesCounter.textContent = res['likes_count'] + `${isHomeSection() ? ' Likes' : ''}` : likesCounter.textContent = ' ';
     const dislikesCounter = parentElement.querySelector(`.dislikes-info`);

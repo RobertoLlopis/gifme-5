@@ -55,7 +55,7 @@ class LikeDislikePostController extends Controller
     }
     
     public function getLikesDislikes(Request $request){
-        $arrayPosts = $request['rendered_posts'];
+        $arrayPosts = json_decode($request['rendered_posts']);
 
         // $arrayPosts = [1,2,3,4,5,6];
 
@@ -64,7 +64,7 @@ class LikeDislikePostController extends Controller
 
         foreach($posts as $post){
             $info = $post->getAllLikeDislikes();
-            $output[$info['id']] = $info;
+            array_push($output, $info);
         }
 
         return $output;

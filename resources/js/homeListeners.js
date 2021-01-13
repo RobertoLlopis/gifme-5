@@ -100,10 +100,8 @@ function replaceWithAnchor(e, input) {
     e.preventDefault();
     let username = e.target.closest('a').querySelector('.username').textContent.trim();
 
-    // let inputValueReplaced = input.value.replace(mentionRegEx, `<a href="/profile/${userMentionId}" class="bg-yellow-300 font-black font-bold">${username}</a>`);
     input.value = input.value.replace(mentionRegEx, '_' + username);
 
-    // commentMentionsBuffer.comment = inputValueReplaced;
     dissapear(e.target.closest('form').querySelector('.searchPopup'));
     input.focus();
     console.log(commentMentionsBuffer);

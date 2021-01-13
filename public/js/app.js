@@ -21361,6 +21361,20 @@ Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('input[name=custom-gif-url]'
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#modal-new-post').addEventListener('submit', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleNewPostSubmit"]); // Cancel button
 
 Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#cancel-new-post').addEventListener('click', _listeners__WEBPACK_IMPORTED_MODULE_1__["handleModalClick"]);
+setInterval(function () {
+  var renderedPost = Array.from(document.querySelectorAll('article'));
+  var rendered_ids = renderedPost.map(function (p) {
+    return p.id;
+  });
+  var formData = new FormData();
+  formData.append('rendered_posts', JSON.stringify(rendered_ids));
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["fetchPost"])('/updateLikes', formData).then(function (res) {
+    return JSON.parse(res).forEach(function (post) {
+      Object(_listeners__WEBPACK_IMPORTED_MODULE_1__["updateCounters"])(post, document.getElementById(post['id']));
+    });
+  });
+}, 10000); // JSON.parse(res).forEach(post => uploadFileToImgur(post, $(`article[id="${post.id}"]`)))
+// Object.keys(JSON.parse(res)).forEach(key => uploadFileToImgur(res[key], $(`article[id="${res[key].id}"]`)))
 
 /***/ }),
 
@@ -21544,10 +21558,8 @@ var handleHomeInputKeyup = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["deboun
 
 function replaceWithAnchor(e, input) {
   e.preventDefault();
-  var username = e.target.closest('a').querySelector('.username').textContent.trim(); // let inputValueReplaced = input.value.replace(mentionRegEx, `<a href="/profile/${userMentionId}" class="bg-yellow-300 font-black font-bold">${username}</a>`);
-
-  input.value = input.value.replace(mentionRegEx, '_' + username); // commentMentionsBuffer.comment = inputValueReplaced;
-
+  var username = e.target.closest('a').querySelector('.username').textContent.trim();
+  input.value = input.value.replace(mentionRegEx, '_' + username);
   Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["dissapear"])(e.target.closest('form').querySelector('.searchPopup'));
   input.focus();
   console.log(commentMentionsBuffer);
@@ -21559,7 +21571,7 @@ function replaceWithAnchor(e, input) {
 /*!***********************************!*\
   !*** ./resources/js/listeners.js ***!
   \***********************************/
-/*! exports provided: newGifCnt, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit, handleProfileSearch, handleInteraction */
+/*! exports provided: newGifCnt, handleModalClick, handleModalDisplay, handleNewPostFileChange, changeNewPostUrl, handleCustomUrlChange, handleNewPostSubmit, handleProfileSearch, handleInteraction, updateCounters */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21573,6 +21585,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewPostSubmit", function() { return handleNewPostSubmit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleProfileSearch", function() { return handleProfileSearch; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleInteraction", function() { return handleInteraction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateCounters", function() { return updateCounters; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./resources/js/utils.js");
 
 var newGifCnt = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["$"])('#last-load-img');
@@ -22005,8 +22018,8 @@ function createFollowingUser(user) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/adriallorens/Documents/laravel/gifme-5/resources/scss/app.scss */"./resources/scss/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\gifme-5\resources\scss\app.scss */"./resources/scss/app.scss");
 
 
 /***/ })

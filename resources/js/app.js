@@ -2,8 +2,8 @@
 require('./bootstrap');
 require('alpinejs');
 
-import { $, isHomeSection, isProfileSection } from './utils.js';
-import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleFollowClick, handleInteraction, handleProfileSearch } from './listeners';
+import { $, isHomeSection, isProfileSection, fetchPost } from './utils.js';
+import { handleModalDisplay, handleModalClick, handleNewPostFileChange, handleCustomUrlChange, handleNewPostSubmit, handleInteraction, handleProfileSearch, updateCounters } from './listeners';
 import { handleHomeSubmit, handleHomeClick, handleSidebarClick, handleHomeInputKeyup } from './homeListeners';
 import { showIconLayer, hideIconLayer, handleProfileFollow } from "./profileListeners";
 import { dropHandler, dragEventHandler } from './dragAndDrop';
@@ -72,5 +72,16 @@ $('#modal-new-post').addEventListener('submit', handleNewPostSubmit);
 // Cancel button
 $('#cancel-new-post').addEventListener('click', handleModalClick);
 
+setInterval(() => {
+    let renderedPost = Array.from(document.querySelectorAll('article'));
+    let rendered_ids = renderedPost.map(p => p.id);
+    let formData = new FormData();
+    formData.append('rendered_posts', JSON.stringify(rendered_ids));
+    fetchPost('/updateLikes', formData).then(res => JSON.parse(res).forEach(post => {
+        updateCounters(post, document.getElementById(post['id']))
+    }));
+}, 10000);
 
 
+// JSON.parse(res).forEach(post => uploadFileToImgur(post, $(`article[id="${post.id}"]`)))
+// Object.keys(JSON.parse(res)).forEach(key => uploadFileToImgur(res[key], $(`article[id="${res[key].id}"]`)))

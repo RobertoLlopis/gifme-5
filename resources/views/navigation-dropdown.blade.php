@@ -11,10 +11,15 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden w-full justify-between space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="/" :active="request()->routeIs('')">
+                <div class="hidden w-full justify-between mr-3 space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="flex justify-center">
+                <x-jet-nav-link href="/" :active="request()->routeIs('')" class="mr-4">
                         Home
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="/profile/{{Auth::user()->id}}" :active="request()->routeIs('')">
+                        My Gifs
+                    </x-jet-nav-link>
+                </div>
                 </div>
             </div>
 
